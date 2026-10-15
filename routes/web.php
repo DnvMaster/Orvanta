@@ -2,6 +2,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\EmployeeController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -9,8 +10,9 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('throttle:5,1')->name('login.store');
 });
 
-Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth')->name('logout');
+Route::get('/employees', [EmployeeController::class, 'index'])->middleware(['auth', 'active', 'admin'])->name('employees.index');
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware(['auth', 'active'])->name('logout');
 
 Route::get('/', function () {
     return view('orvanta.dashboard');
-})->middleware('auth')->name('dashboard');
+})->middleware(['auth', 'active'])->name('dashboard');

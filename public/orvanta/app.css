@@ -560,3 +560,52 @@ button {
         transition-duration: 0.01ms !important;
     }
 }
+
+
+/* Кнопка выхода из аккаунта */
+.sidebar-logout-form {
+    margin-top: 8px;
+}
+
+.sidebar-logout-button {
+     display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    color: #252D35;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.sidebar-logout-button:hover {
+    background: #F5F7F6;
+    border-color: rgba(22, 134, 106, 0.18);
+    color: #16866A;
+}
+
+.sidebar-logout-button span:first-child {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    color: #16866A;
+    font-size: 18px;
+    line-height: 1;
+}
+
+.sidebar-collapsed .sidebar-logout-button {
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.sidebar-collapsed .sidebar-logout-button span:last-child {
+    display: none;
+}

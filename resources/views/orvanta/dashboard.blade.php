@@ -28,7 +28,7 @@
                 </a>
                 <a href="#" class="nav-item" title="Клиенты">
                     <span class="nav-icon">♙</span>
-                    <span class="nav-label">Клиенты</span>
+                    <span class="nav-label">Сотрудники</span>
                 </a>
                 <a href="#" class="nav-item" title="Сделки">
                     <span class="nav-icon">◇</span>
@@ -51,10 +51,17 @@
                 <div class="sidebar-user">
                     <div class="user-avatar">O</div>
                     <div class="user-info">
-                        <span class="user-name">Администратор</span>
-                        <span class="user-role">Рабочий аккаунт</span>
+                        <span class="user-name">{{ auth()->user()->name }}</span>
+                        <span class="user-role">{{ auth()->user()->email }}</span>
                     </div>
                 </div>
+                <form action="{{ route('logout') }}" method="POST" class="sidebar-logout-form">
+                    @csrf
+                    <button type="submit" class="sidebar-logout-button">
+                        <span aria-hidden="true">↪</span>
+                        <span>Выйти из аккаунта</span>
+                    </button>
+                </form>
             </div>
         </aside>
 
@@ -87,7 +94,7 @@
                 <div class="stats-grid">
                     <article class="stat-card">
                         <div class="stat-card-top">
-                            <span class="stat-label">Клиенты</span>
+                            <span class="stat-label">Сотрудники</span>
                             <span class="stat-icon">♙</span>
                         </div>
                         <div class="stat-value">—</div>
