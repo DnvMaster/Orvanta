@@ -100,67 +100,93 @@
                     </div>
                 </div>
 
-                <section class="panel">
-                    <div class="panel-header">
-                        <div>
-                            <h2>Список сотрудников</h2>
-                            <p>Сотрудники, зарегистрированные в рабочем пространстве.</p>
-                        </div>
-                        <span class="panel-badge">Всего: {{ $employees->total() }}</span>
+
+            <section class="panel">
+                @if (session('success'))
+                    <div role="status"
+                        style="margin: 20px 24px 0; padding: 14px 16px; border: 1px solid #a7dfc8; border-radius: 10px; background: #effaf5; color: #176b4d;">
+                        <strong>{{ session('success') }}</strong>
+
+                        @if (session('created_employee_email'))
+                            <p style="margin: 6px 0 0;">
+                                Email сотрудника: {{ session('created_employee_email') }}
+                            </p>
+                        @endif
+
+                        @if (session('temporary_password'))
+                            <div style="margin-top: 12px;">
+                                <strong>Временный пароль:</strong>
+                                <code style="display: inline-block; margin-left: 6px; padding: 5px 8px; border-radius: 5px; background: #fff; color: #176b4d;">{{ session('temporary_password') }}</code>
+                                <p style="margin: 8px 0 0; font-size: 13px;">
+                                    Сохраните пароль и передайте его сотруднику безопасным способом.
+                                    После закрытия этой страницы повторно показать его не получится.
+                                </p>
+                            </div>
+                        @endif
+                    </div>
+                @endif
+
+                <div class="panel-header">
+                    <div>
+                        <h2>Список сотрудников</h2>
+                        <p>Сотрудники, зарегистрированные в рабочем пространстве.</p>
+                    </div>
+                    <span class="panel-badge">Всего: {{ $employees->total() }}</span>
+                </div>
+
+                @if ($employees->isEmpty())
+                    <div class="empty-state">
+                        <div class="empty-state-icon">♙</div>
+                        <h3>Сотрудников пока нет</h3>
+                        <p>Когда появятся учётные записи, они отобразятся здесь.</p>
+                    </div>
+                @else
+                    <div style="overflow-x: auto; padding: 0 24px 20px;">
+                        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                            <thead>
+                                <tr>
+                                    <th style="padding: 14px 10px; border-bottom: 1px solid var(--orvanta-border);">Имя</th>
+                                    <th style="padding: 14px 10px; border-bottom: 1px solid var(--orvanta-border);">Email</th>
+                                    <th style="padding: 14px 10px; border-bottom: 1px solid var(--orvanta-border);">Должность</th>
+                                    <th style="padding: 14px 10px; border-bottom: 1px solid var(--orvanta-border);">Отдел</th>
+                                    <th style="padding: 14px 10px; border-bottom: 1px solid var(--orvanta-border);">Роль</th>
+                                    <th style="padding: 14px 10px; border-bottom: 1px solid var(--orvanta-border);">Статус</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($employees as $employee)
+                                    <tr>
+                                        <td style="padding: 14px 10px; border-bottom: 1px solid var(--orvanta-border);">
+                                            {{ $employee->name }}
+                                        </td>
+                                        <td style="padding: 14px 10px; border-bottom: 1px solid var(--orvanta-border);">
+                                            {{ $employee->email }}
+                                        </td>
+                                        <td style="padding: 14px 10px; border-bottom: 1px solid var(--orvanta-border);">
+                                            {{ $employee->position ?: '—' }}
+                                        </td>
+                                        <td style="padding: 14px 10px; border-bottom: 1px solid var(--orvanta-border);">
+                                            {{ $employee->department ?: '—' }}
+                                        </td>
+                                        <td style="padding: 14px 10px; border-bottom: 1px solid var(--orvanta-border);">
+                                            {{ $employee->role === 'admin' ? 'Администратор' : 'Сотрудник' }}
+                                        </td>
+                                        <td style="padding: 14px 10px; border-bottom: 1px solid var(--orvanta-border);">
+                                            {{ $employee->status === 'active' ? 'Активен' : 'Заблокирован' }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
 
-                    @if ($employees->isEmpty())
-                        <div class="empty-state">
-                            <div class="empty-state-icon">♙</div>
-                            <h3>Сотрудников пока нет</h3>
-                            <p>Когда появятся учётные записи, они отобразятся здесь.</p>
-                        </div>
-                    @else
-                        <div style="overflow-x: auto; padding: 0 24px 20px;">
-                            <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                                <thead>
-                                    <tr>
-                                        <th style="padding: 14px 10px; border-bottom: 1px solid var(--orvanta-border);">Имя</th>
-                                        <th style="padding: 14px 10px; border-bottom: 1px solid var(--orvanta-border);">Email</th>
-                                        <th style="padding: 14px 10px; border-bottom: 1px solid var(--orvanta-border);">Должность</th>
-                                        <th style="padding: 14px 10px; border-bottom: 1px solid var(--orvanta-border);">Отдел</th>
-                                        <th style="padding: 14px 10px; border-bottom: 1px solid var(--orvanta-border);">Роль</th>
-                                        <th style="padding: 14px 10px; border-bottom: 1px solid var(--orvanta-border);">Статус</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($employees as $employee)
-                                        <tr>
-                                            <td style="padding: 14px 10px; border-bottom: 1px solid var(--orvanta-border);">
-                                                {{ $employee->name }}
-                                            </td>
-                                            <td style="padding: 14px 10px; border-bottom: 1px solid var(--orvanta-border);">
-                                                {{ $employee->email }}
-                                            </td>
-                                            <td style="padding: 14px 10px; border-bottom: 1px solid var(--orvanta-border);">
-                                                {{ $employee->position ?: '—' }}
-                                            </td>
-                                            <td style="padding: 14px 10px; border-bottom: 1px solid var(--orvanta-border);">
-                                                {{ $employee->department ?: '—' }}
-                                            </td>
-                                            <td style="padding: 14px 10px; border-bottom: 1px solid var(--orvanta-border);">
-                                                {{ $employee->role === 'admin' ? 'Администратор' : 'Сотрудник' }}
-                                            </td>
-                                            <td style="padding: 14px 10px; border-bottom: 1px solid var(--orvanta-border);">
-                                                {{ $employee->status === 'active' ? 'Активен' : 'Заблокирован' }}
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div style="padding: 0 24px 24px;">
-                            {{ $employees->links() }}
-                        </div>
-                    @endif
-                </section>
+                    <div style="padding: 0 24px 24px;">
+                        {{ $employees->links() }}
+                    </div>
+                @endif
             </section>
+
+
         </main>
     </div>
 

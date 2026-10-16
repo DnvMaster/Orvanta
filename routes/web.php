@@ -10,7 +10,12 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('throttle:5,1')->name('login.store');
 });
 
-Route::get('/employees', [EmployeeController::class, 'index'])->middleware(['auth', 'active', 'admin'])->name('employees.index');
+Route::middleware(['auth', 'active', 'admin'])->group(function () {
+    Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
+    Route::get('/employees/create', [EmployeeController::class, 'create'])->name('employees.create');
+    Route::post('/employees', [EmployeeController::class, 'store'])->name('employees.store');
+});
+
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware(['auth', 'active'])->name('logout');
 
 Route::get('/', function () {
