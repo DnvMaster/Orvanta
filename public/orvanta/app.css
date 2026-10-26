@@ -1,0 +1,681 @@
+/* ========================================
+   ORVANTA CRM — интерфейс for DNVMASTER
+   ======================================== */
+
+:root {
+    --orvanta-green: #16866a;
+    --orvanta-green-light: #e8f4ef;
+    --orvanta-graphite: #252d35;
+    --orvanta-background: #f5f7f6;
+    --orvanta-text: #26332f;
+    --orvanta-muted: #7b8782;
+    --orvanta-border: #e5eae7;
+    --orvanta-white: #ffffff;
+    --sidebar-width: 240px;
+    --sidebar-collapsed-width: 68px;
+}
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--orvanta-text);
+    background: var(--orvanta-background);
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+}
+button,
+a {
+    font: inherit;
+}
+a {
+    color: inherit;
+    text-decoration: none;
+}
+button {
+    cursor: pointer;
+}
+
+/* Основной макет */
+.crm-layout {
+    min-height: 100vh;
+}
+.sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    width: var(--sidebar-width);
+    background: var(--orvanta-white);
+    border-right: 1px solid var(--orvanta-border);
+    transition: width 0.22s ease;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.main-area {
+    min-height: 100vh;
+    margin-left: var(--sidebar-width);
+    transition: margin-left 0.22s ease;
+}
+.sidebar-collapsed .sidebar {
+    width: var(--sidebar-collapsed-width);
+}
+.sidebar-collapsed .main-area {
+    margin-left: var(--sidebar-collapsed-width);
+}
+
+/* Логотип и верхняя часть меню */
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 76px;
+    padding: 0 14px 0 20px;
+    border-bottom: 1px solid var(--orvanta-border);
+}
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+.brand-mark {
+    display: grid;
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border-radius: 9px;
+    background: var(--orvanta-green);
+    color: white;
+    font-size: 21px;
+    font-weight: 700;
+}
+.brand-name {
+    color: var(--orvanta-graphite);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.7px;
+    white-space: nowrap;
+}
+.sidebar-toggle {
+    display: grid;
+    flex: 0 0 28px;
+    width: 28px;
+    height: 28px;
+    place-items: center;
+    padding: 0;
+    border: 1px solid var(--orvanta-border);
+    border-radius: 6px;
+    background: white;
+    color: var(--orvanta-muted);
+    font-size: 24px;
+    line-height: 1;
+}
+.sidebar-toggle:hover {
+    color: var(--orvanta-green);
+    border-color: var(--orvanta-green);
+}
+
+/* Навигация */
+.sidebar-section-label {
+    padding: 26px 20px 12px;
+    color: #9aa49f;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    white-space: nowrap;
+}
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 10px;
+}
+.nav-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-height: 42px;
+    padding: 0 12px;
+    border-radius: 7px;
+    color: #65716b;
+    white-space: nowrap;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+.nav-item:hover {
+    background: #f5f8f6;
+    color: var(--orvanta-graphite);
+}
+.nav-item.active {
+    background: var(--orvanta-green-light);
+    color: var(--orvanta-green);
+    font-weight: 600;
+}
+.nav-icon {
+    display: grid;
+    flex: 0 0 22px;
+    width: 22px;
+    place-items: center;
+    font-size: 19px;
+    line-height: 1;
+}
+.nav-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Нижняя часть меню */
+.sidebar-bottom {
+    margin-top: auto;
+    padding: 16px 10px 12px;
+    border-top: 1px solid var(--orvanta-border);
+}
+.sidebar-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+    padding: 12px 8px 4px;
+    border-top: 1px solid var(--orvanta-border);
+}
+.user-avatar {
+    display: grid;
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border-radius: 50%;
+    background: #e9eeeb;
+    color: var(--orvanta-graphite);
+    font-weight: 700;
+}
+.user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+.user-name {
+    color: var(--orvanta-graphite);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.user-role {
+    color: var(--orvanta-muted);
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+/* Свёрнутая панель */
+.sidebar-collapsed .sidebar-header {
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 0;
+}
+.sidebar-collapsed .brand-name,
+.sidebar-collapsed .sidebar-section-label,
+.sidebar-collapsed .nav-label,
+.sidebar-collapsed .user-info {
+    display: none;
+}
+.sidebar-collapsed .brand {
+    justify-content: center;
+}
+.sidebar-collapsed .sidebar-nav {
+    padding: 0 8px;
+}
+.sidebar-collapsed .nav-item {
+    justify-content: center;
+    gap: 0;
+    padding: 0;
+}
+.sidebar-collapsed .sidebar-bottom {
+    padding-right: 8px;
+    padding-left: 8px;
+}
+.sidebar-collapsed .sidebar-user {
+    justify-content: center;
+    padding-right: 0;
+    padding-left: 0;
+}
+.sidebar-collapsed .sidebar-toggle span {
+    display: inline-block;
+    transform: rotate(180deg);
+}
+
+/* Верхняя панель */
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 75.7px;
+    padding: 0 32px;
+    background: var(--orvanta-white);
+    border-bottom: 1px solid var(--orvanta-border);
+}
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    color: var(--orvanta-muted);
+    font-size: 12px;
+}
+.breadcrumb-separator {
+    color: #c3cbc6;
+}
+.breadcrumb strong {
+    color: var(--orvanta-graphite);
+    font-weight: 600;
+}
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.system-status {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #697770;
+    font-size: 12px;
+}
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--orvanta-green);
+}
+
+/* Рабочая область */
+.dashboard-content {
+    position: relative;
+    isolation: isolate;
+    max-width: 1600px;
+    min-height: calc(100vh - 64px);
+    margin: 0 auto;
+    padding: 34px 32px 48px;
+    background-color: #f5f8f6;
+    background-image:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.76) 0%,
+            rgba(244, 249, 246, 0.64) 50%,
+            rgba(232, 244, 239, 0.55) 100%
+        ),
+        url('/orvanta/images/dashboard-bg.jpg');
+    background-position: center, center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+}
+.page-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 28px;
+}
+.eyebrow {
+    margin: 0 0 10px;
+    color: var(--orvanta-green);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.1px;
+}
+.page-heading h1 {
+    margin: 0;
+    color: var(--orvanta-graphite);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.8px;
+}
+.page-description {
+    margin: 9px 0 0;
+    color: var(--orvanta-muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+.page-date {
+    padding: 9px 12px;
+    border: 1px solid var(--orvanta-border);
+    border-radius: 6px;
+    background: white;
+    color: #697770;
+    font-size: 11px;
+}
+
+/* Карточки показателей */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+.stat-card {
+    min-width: 0;
+    padding: 20px;
+    border: 1px solid var(--orvanta-border);
+    border-radius: 9px;
+    background: var(--orvanta-white);
+    box-shadow: 0 2px 5px rgb(30 50 40 / 2%);
+}
+.stat-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+.stat-label {
+    color: #697770;
+    font-size: 12px;
+    font-weight: 500;
+}
+.stat-icon {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border-radius: 7px;
+    background: var(--orvanta-green-light);
+    color: var(--orvanta-green);
+    font-size: 18px;
+}
+.stat-value {
+    margin-top: 18px;
+    color: var(--orvanta-graphite);
+    font-size: 29px;
+    font-weight: 700;
+    letter-spacing: -0.8px;
+}
+.stat-caption {
+    margin-top: 8px;
+    color: #98a19c;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* Основная панель */
+.panel {
+    overflow: hidden;
+    border: 1px solid var(--orvanta-border);
+    border-radius: 9px;
+    background: var(--orvanta-white);
+    box-shadow: 0 2px 5px rgb(30 50 40 / 2%);
+}
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 21px 24px;
+    border-bottom: 1px solid var(--orvanta-border);
+}
+.panel-header h2 {
+    margin: 0;
+    color: var(--orvanta-graphite);
+    font-size: 14px;
+    font-weight: 700;
+}
+.panel-header p {
+    margin: 7px 0 0;
+    color: var(--orvanta-muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+.panel-badge {
+    padding: 6px 9px;
+    border-radius: 5px;
+    background: #f1f3f2;
+    color: #697770;
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.empty-state {
+    display: flex;
+    min-height: 240px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+    text-align: center;
+}
+.empty-state-icon {
+    display: grid;
+    width: 48px;
+    height: 48px;
+    place-items: center;
+    border: 1px solid #dcebe3;
+    border-radius: 12px;
+    background: #f3f8f5;
+    color: var(--orvanta-green);
+    font-size: 24px;
+}
+.empty-state h3 {
+    margin: 18px 0 8px;
+    color: var(--orvanta-graphite);
+    font-size: 14px;
+    font-weight: 600;
+}
+.empty-state p {
+    max-width: 380px;
+    margin: 0;
+    color: var(--orvanta-muted);
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+/* Адаптация под небольшие экраны */
+@media (max-width: 1100px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .dashboard-content {
+        padding-right: 24px;
+        padding-left: 24px;
+    }
+    .topbar {
+        padding-right: 24px;
+        padding-left: 24px;
+    }
+}
+
+@media (max-width: 700px) {
+    :root {
+        --sidebar-width: 68px;
+    }
+    .sidebar {
+        width: var(--sidebar-collapsed-width);
+    }
+    .sidebar .brand-name,
+    .sidebar .sidebar-section-label,
+    .sidebar .nav-label,
+    .sidebar .user-info {
+        display: none;
+    }
+    .sidebar .sidebar-header {
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+        padding: 12px 0;
+    }
+    .sidebar .brand {
+        justify-content: center;
+    }
+    .sidebar .sidebar-nav {
+        padding: 0 8px;
+    }
+    .sidebar .nav-item {
+        justify-content: center;
+        gap: 0;
+        padding: 0;
+    }
+    .sidebar .sidebar-bottom {
+        padding-right: 8px;
+        padding-left: 8px;
+    }
+    .sidebar .sidebar-user {
+        justify-content: center;
+        padding-right: 0;
+        padding-left: 0;
+    }
+    .sidebar .sidebar-toggle span {
+        transform: rotate(180deg);
+    }
+    .sidebar-collapsed .sidebar-toggle span {
+        transform: none;
+    }
+    .topbar {
+        min-height: 56px;
+        padding: 0 16px;
+    }
+    .dashboard-content {
+        padding: 26px 16px 32px;
+    }
+    .page-heading {
+        align-items: flex-start;
+    }
+    .page-heading h1 {
+        font-size: 25px;
+    }
+    .page-date {
+        display: none;
+    }
+    .stats-grid {
+        gap: 10px;
+    }
+    .stat-card {
+        padding: 14px;
+    }
+    .stat-value {
+        font-size: 25px;
+    }
+    .panel-header {
+        padding: 17px;
+    }
+    .empty-state {
+        min-height: 210px;
+    }
+    .system-status {
+        font-size: 11px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+
+/* Кнопка выхода из аккаунта */
+.sidebar-logout-form {
+    margin-top: 8px;
+}
+
+.sidebar-logout-button {
+     display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    color: #252D35;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.sidebar-logout-button:hover {
+    background: #F5F7F6;
+    border-color: rgba(22, 134, 106, 0.18);
+    color: #16866A;
+}
+
+.sidebar-logout-button span:first-child {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    color: #16866A;
+    font-size: 18px;
+    line-height: 1;
+}
+
+.sidebar-collapsed .sidebar-logout-button {
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.sidebar-collapsed .sidebar-logout-button span:last-child {
+    display: none;
+}
+
+.crm-layout .sidebar a, .crm-layout .sidebar a:hover, .crm-layout .sidebar a:focus {
+    text-decoration: none;
+}
+/* ========================================
+   ORVANTA CRM — Footer
+   ======================================== */
+.app-footer {
+    padding: 18px 32px;
+    background: #ffffff;
+    border-top: 1px solid #e5eae7;
+}
+.app-footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+.app-footer-copyright {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    color: #7b8782;
+    font-size: 11px;
+    line-height: 1.6;
+}
+.app-footer-brand {
+    color: #252d35;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+}
+.app-footer-note {
+    color: #7b8782;
+    font-size: 11px;
+}
+.app-footer-author {
+    color: #16866a;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+}
+@media (max-width: 700px) {
+    .app-footer {
+        padding: 16px;
+    }
+    .app-footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+}
