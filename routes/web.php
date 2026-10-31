@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\DealController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EmployeeController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +38,8 @@ Route::middleware(['auth', 'active'])->group(function () {
         Route::put('/{deal}', [DealController::class, 'update'])->name('update');
         Route::get('/{deal}', [DealController::class, 'show'])->name('show');
     });
+
+    Route::resource('companies', CompanyController::class);
 
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });

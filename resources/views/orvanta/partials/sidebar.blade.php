@@ -18,6 +18,12 @@
             <span class="nav-icon">♙</span>
             <span class="nav-label">Сотрудники</span>
         </a>
+        <a href="{{ route('companies.index') }}"
+           class="nav-item {{ request()->routeIs('companies.*') ? 'active' : '' }}"
+           title="Компании">
+            <span class="nav-icon">▣</span>
+            <span class="nav-label">Компании</span>
+        </a>
         <a href="{{ route('deals.index') }}" class="nav-item {{ request()->routeIs('deals.*') ? 'active' : '' }}" title="Сделки">
             <span class="nav-icon">◇</span>
             <span class="nav-label">Сделки</span>

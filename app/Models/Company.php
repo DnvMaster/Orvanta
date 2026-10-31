@@ -14,8 +14,7 @@ class Company extends Model
      *
      * @var list<string>
      */
-    protected $fillable = ['name','legal_name','tax_number','email','phone','website','address','notes'];
-
+    protected $fillable = ['name', 'country_code', 'legal_name', 'tax_number', 'tax_number_type', 'email', 'phone', 'website', 'address', 'address_country_code', 'notes'];
     /**
      * Контакты, относящиеся к компании.
      */
