@@ -73,7 +73,16 @@
                                             <div class="small text-secondary">{{ $company->legal_name }}</div>
                                         @endif
                                     </td>
-                                    <td>{{ $company->country_code ?: '—' }}</td>
+                                    <td>
+                                        @if ($company->country_code)
+                                            <span class="company-country">
+                                                <img src="https://flagcdn.com/w40/{{ strtolower($company->country_code) }}.png" alt="{{ config('countries.' . $company->country_code . '.name', $company->country_code) }}" class="company-country-flag" width="24" height="18" loading="lazy">
+                                                <span>{{ config('countries.' . $company->country_code . '.name', $company->country_code) }}</span>
+                                            </span>
+                                        @else
+                                            —
+                                        @endif
+                                    </td>
                                     <td>
                                         {{ $company->tax_number ?: '—' }}
                                         @if ($company->tax_number_type)

@@ -33,13 +33,11 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="country_code" class="form-label">Страна регистрации</label>
-                                    <select id="country_code" name="country_code" class="form-select @error('country_code') is-invalid @enderror">
+                                    <select id="country_code" name="country_code" class="form-select @error('country_code') is-invalid @enderror" data-countries="{{ json_encode(config('countries'), JSON_HEX_APOS | JSON_HEX_QUOT) }}" data-old-tax-type="{{ old('tax_number_type') }}">
                                         <option value="">Выберите страну</option>
-                                        @foreach(config('countries') as $code => $country)
-                                            <option value="{{ $code }}" @selected(old('country_code') === $code)>
-                                                {{ $country['flag'] }} {{ $country['name'] }}
-                                            </option>
-                                        @endforeach
+                                            @foreach(config('countries') as $code => $country)
+                                                <option value="{{ $code }}" @selected(old('country_code') === $code)>{{ $country['name'] }}</option>
+                                            @endforeach
                                     </select>
                                     @error('country_code')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -140,17 +138,18 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="address_country_code" class="form-label">Страна</label>
-                                    <select id="address_country_code" name="address_country_code"
-                                        class="form-select @error('address_country_code') is-invalid @enderror">
+                                    <div class="d-flex align-items-center gap-2 mb-2" id="address-country-preview">
+                                        <img src="https://flagcdn.com/w40/{{ strtolower(old('address_country_code', '')) }}.png" alt="" class="company-country-flag" width="24" height="18" loading="lazy" @if (!old('address_country_code')) hidden @endif>
+                                        <span>{{ old('address_country_code') ? config('countries.' . old('address_country_code') . '.name', old('address_country_code')) : '' }}</span>
+                                    </div>
+                                    <select id="address_country_code" name="address_country_code" class="form-select @error('address_country_code') is-invalid @enderror">
                                         <option value="">Выберите страну</option>
                                         @foreach(config('countries') as $code => $country)
-                                            <option value="{{ $code }}"@selected(old('address_country_code') === $code)>
-                                                {{ $country['flag'] }} {{ $country['name'] }}
-                                            </option>
+                                            <option value="{{ $code }}" @selected(old('address_country_code') === $code)>{{ $country['name'] }}</option>
                                         @endforeach
                                     </select>
                                     @error('address_country_code')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -181,34 +180,4 @@
             </div>
         </form>
     </section>
-
-    {{-- Динамический выбор типа налогового номера --}}
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const countrySelect = document.getElementById('country_code');
-            const taxTypeSelect = document.getElementById('tax_number_type');
-            const countries = @json(config('countries'));
-            const oldTaxType = @json(old('tax_number_type'));
-            function updateTaxTypes(selectedType = '') {
-                const countryCode = countrySelect.value;
-                const identifiers = countries[countryCode]?.tax_identifiers ?? {};
-                taxTypeSelect.innerHTML = '';
-                const defaultOption = document.createElement('option');
-                defaultOption.value = '';
-                defaultOption.textContent = countryCode ? 'Выберите тип налогового номера' : 'Сначала выберите страну';
-                taxTypeSelect.appendChild(defaultOption);
-                Object.entries(identifiers).forEach(([key, label]) => {
-                    const option = document.createElement('option');
-                    option.value = label;
-                    option.textContent = label;
-                    option.selected = label === selectedType;
-                    taxTypeSelect.appendChild(option);
-                });
-            }
-            countrySelect.addEventListener('change', function () {
-                updateTaxTypes();
-            });
-            updateTaxTypes(oldTaxType);
-        });
-    </script>
 @endsection
