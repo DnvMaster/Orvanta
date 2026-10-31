@@ -1,4 +1,3 @@
-
 @extends('orvanta.layouts.app')
 
 @section('title', 'Новая сделка — Orvanta CRM')
@@ -41,6 +40,34 @@
                         @error('title')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6 mb-3">
+                            <label for="deal-company" class="form-label">Компания</label>
+                            <select id="deal-company" name="company_id" class="form-select @error('company_id') is-invalid @enderror">
+                                <option value="">Без компании</option>
+                                @foreach ($companies as $company)
+                                    <option value="{{ $company->id }}" @selected((string) old('company_id') === (string) $company->id)>{{ $company->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('company_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="deal-contact" class="form-label">Контакт</label>
+                            <select id="deal-contact" name="contact_id" class="form-select @error('contact_id') is-invalid @enderror">
+                                <option value="">Без контакта</option>
+                                @foreach ($contacts as $contact)
+                                    <option value="{{ $contact->id }}" @selected((string) old('contact_id') === (string) $contact->id)>{{ $contact->last_name }} {{ $contact->first_name }}
+                                        @if($contact->company) — {{ $contact->company->name }}@endif
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('contact_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
                     <div class="row g-3">
                         <div class="col-md-6 mb-3">
