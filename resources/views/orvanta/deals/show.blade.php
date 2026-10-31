@@ -1,4 +1,3 @@
-
 @extends('orvanta.layouts.app')
 
 @section('title', $deal->title . ' — Orvanta CRM')
@@ -51,8 +50,22 @@
                         <div class="fw-semibold">{{ $deal->stage?->name ?? 'Не указан' }}</div>
                     </div>
                     <div class="col-md-6">
-                        <div class="mb-1 text-muted small">Ответственный сотрудник</div>
-                        <div class="fw-semibold">{{ $deal->responsible?->name ?? 'Не назначен' }}</div>
+                        <div class="mb-1 text-muted small">Компания</div>
+                            @if ($deal->company)
+                                <div class="fw-semibold">{{ $deal->company->name }}</div>
+                            @else
+                                <div class="text-muted">Не указана</div>
+                            @endif
+                    </div>
+                <div class="col-md-6">
+                    <div class="mb-1 text-muted small">Контакт</div>
+                        @if ($deal->contact)
+                            <div class="fw-semibold">
+                                {{ $deal->contact->last_name }} {{ $deal->contact->first_name }}
+                            </div>
+                        @else
+                            <div class="text-muted">Не указан</div>
+                        @endif
                     </div>
                     <div class="col-md-6">
                         <div class="mb-1 text-muted small">Дата создания</div>
