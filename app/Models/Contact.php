@@ -4,29 +4,27 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Concerns\HasResponsibilityScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Contact extends Model
 {
-    /**
-     * Поля, разрешённые для массового заполнения.
-     *
-     * @var list<string>
-     */
-    protected $fillable = ['company_id','last_name','first_name','middle_name','email','phone','position','notes'];
+    use HasResponsibilityScope;
 
-    /**
-     * Компания, к которой относится контакт.
-     */
+    protected $fillable = ['company_id', 'last_name', 'first_name', 'middle_name', 'email', 'phone', 'position', 'notes'];
+
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
     }
-    /**
-     * Сделки, связанные с контактом.
-    */
+
+    public function responsible(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
     public function deals(): HasMany
     {
         return $this->hasMany(Deal::class);
