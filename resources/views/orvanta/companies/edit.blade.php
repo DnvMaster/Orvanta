@@ -34,13 +34,17 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="country_code" class="form-label">Страна регистрации</label>
+                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                        @if ($company->country_code)
+                                            <img src="https://flagcdn.com/w40/{{ strtolower($company->country_code) }}.png" alt="{{ config('countries.' . $company->country_code . '.name', $company->country_code) }}" class="company-country-flag" width="24" height="18" loading="lazy">
+                                            <span>{{ config('countries.' . $company->country_code . '.name', $company->country_code) }}</span>
+                                        @endif
+                                    </div>
                                     <select id="country_code" name="country_code" class="form-select @error('country_code') is-invalid @enderror">
                                         <option value="">Выберите страну</option>
-                                        @foreach(config('countries') as $code => $country)
-                                            <option value="{{ $code }}"@selected(old('country_code', $company->country_code) === $code)>
-                                                {{ $country['flag'] }} {{ $country['name'] }}
-                                            </option>
-                                        @endforeach
+                                            @foreach(config('countries') as $code => $country)
+                                                <option value="{{ $code }}" @selected(old('country_code', $company->country_code) === $code)>{{ $country['name'] }}</option>
+                                            @endforeach
                                     </select>
                                     @error('country_code')
                                         <div class="invalid-feedback">{{ $message }}</div>

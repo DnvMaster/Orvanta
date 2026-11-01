@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Concerns\HasResponsibilityScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Deal extends Model
 {
-    protected $fillable = ['pipeline_id', 'pipeline_stage_id', 'user_id', 'company_id', 'contact_id', 'title', 'amount', 'currency', 'description'];
+    use HasResponsibilityScope;
+
+    protected $fillable = ['pipeline_id', 'pipeline_stage_id', 'company_id', 'contact_id', 'title', 'amount', 'currency', 'description'];
 
     protected function casts(): array
     {
@@ -19,7 +22,7 @@ class Deal extends Model
             'user_id' => 'integer',
             'amount' => 'decimal:2',
             'company_id' => 'integer',
-            'contact_id' => 'integer'
+            'contact_id' => 'integer',
         ];
     }
 

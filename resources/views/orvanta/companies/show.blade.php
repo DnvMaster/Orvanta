@@ -33,21 +33,14 @@
                                 <div class="fw-semibold">{{ $company->name }}</div>
                             </div>
                             <div class="col-md-6">
-                                <div class="text-muted small mb-1">Страна регистрации</div>
-                                <div class="fw-semibold">
-                                    @php
-                                        $countries = [
-                                            'DE' => '🇩🇪 Германия',
-                                            'FR' => '🇫🇷 Франция',
-                                            'PL' => '🇵🇱 Польша',
-                                            'GB' => '🇬🇧 Великобритания',
-                                            'RU' => '🇷🇺 Россия',
-                                             'BY' => 'by Беларусь',
-                                            'KZ' => '🇰🇿 Казахстан',
-                                            'US' => '🇺🇸 США',
-                                        ];
-                                    @endphp
-                                    {{ $countries[$company->country_code] ?? 'Не указана' }}
+                            <div class="text-muted small mb-1">Страна регистрации</div>
+                                <div class="fw-semibold d-flex align-items-center gap-2">
+                                    @if ($company->country_code)
+                                        <img src="https://flagcdn.com/w40/{{ strtolower($company->country_code) }}.png" alt="{{ config('countries.' . $company->country_code . '.name', $company->country_code) }}" class="company-country-flag" width="24" height="18" loading="lazy">
+                                        <span>{{ config('countries.' . $company->country_code . '.name', $company->country_code) }}</span>
+                                    @else
+                                        <span class="text-muted">Не указана</span>
+                                    @endif
                                 </div>
                             </div>
                             <div class="col-md-6">
