@@ -2,14 +2,19 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
+use App\Models\Company;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCompanyRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        $company = $this->route('company');
+
+        if (! $company instanceof Company) {
+            return false;
+        }
+        return $this->user()?->can('update', $company) ?? false;
     }
 
     public function rules(): array
