@@ -138,4 +138,20 @@ class EmployeeController extends Controller
         }
         return redirect()->route($redirectRoute, $isEmployeeEdit ? $employee->id : [])->with('success', 'Профиль успешно сохранён.');
     }
+
+    public function destroy(Request $request, User $employee): RedirectResponse
+    {
+        if ($request->user()->is($employee)) {
+            return redirect()->route('employees.index')->with('error', 'Нельзя удалить собственную учётную запись.');
+        }
+        if ($employee->employees()->exists()) {
+            return redirect()->route('employees.index')->with('error', 'Нельзя удалить сотрудника, у которого есть подчинённые. Сначала назначьте им другого руководителя.');
+        }
+        $avatarPath = $employee->avatar_path;
+        $employee->delete();
+        if ($avatarPath) {
+            Storage::disk('public')->delete($avatarPath);
+        }
+        return redirect()->route('employees.index')->with('success', 'Сотрудник успешно удалён.');
+    }
 }

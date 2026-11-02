@@ -26,6 +26,7 @@ Route::middleware(['auth', 'active'])->group(function () {
         Route::post('/', [EmployeeController::class, 'store'])->name('store');
         Route::get('/{employee}/edit', [EmployeeController::class, 'edit'])->name('edit');
         Route::put('/{employee}', [EmployeeController::class, 'update'])->name('update');
+        Route::delete('/{employee}', [EmployeeController::class, 'destroy'])->name('destroy');
     });
 
     Route::prefix('deals')->name('deals.')->group(function () {
