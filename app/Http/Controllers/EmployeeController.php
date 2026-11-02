@@ -9,16 +9,16 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 class EmployeeController extends Controller
 {
     public function index(): View
     {
         $employees = User::query()->select(['id', 'name', 'email', 'role', 'status', 'phone', 'position', 'department', 'avatar_path', 'created_at'])->orderBy('name')->paginate(15);
+
         return view('orvanta.employees.index', ['employees' => $employees]);
     }
 
@@ -34,7 +34,7 @@ class EmployeeController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')],
             'phone' => ['nullable', 'string', 'max:30'],
             'position' => ['nullable', 'string', 'max:255'],
-            'department' => ['nullable', 'string', 'max:255']
+            'department' => ['nullable', 'string', 'max:255'],
         ]);
         $temporaryPassword = Str::password(16);
         $employee = User::create([
@@ -45,8 +45,9 @@ class EmployeeController extends Controller
             'department' => $validated['department'] ?? null,
             'role' => 'employee',
             'status' => 'active',
-            'password' => $temporaryPassword
+            'password' => $temporaryPassword,
         ]);
+
         return redirect()->route('employees.index')->with('success', 'Сотрудник успешно создан.')->with('temporary_password', $temporaryPassword)->with('created_employee_email', $employee->email);
     }
 
@@ -64,17 +65,18 @@ class EmployeeController extends Controller
     {
         $validated = $request->validate([
             'current_password' => ['required', 'current_password'],
-            'password' => ['required','confirmed','different:current_password', Password::min(12)]],[
-            'current_password.required' => 'Введите текущий пароль.',
-            'current_password.current_password' => 'Текущий пароль указан неверно.',
-            'password.required' => 'Введите новый пароль.',
-            'password.confirmed' => 'Подтверждение нового пароля не совпадает.',
-            'password.different' => 'Новый пароль должен отличаться от текущего.',
-            'password.min' => 'Новый пароль должен содержать не менее 12 символов.',
-        ]);
+            'password' => ['required', 'confirmed', 'different:current_password', Password::min(12)]], [
+                'current_password.required' => 'Введите текущий пароль.',
+                'current_password.current_password' => 'Текущий пароль указан неверно.',
+                'password.required' => 'Введите новый пароль.',
+                'password.confirmed' => 'Подтверждение нового пароля не совпадает.',
+                'password.different' => 'Новый пароль должен отличаться от текущего.',
+                'password.min' => 'Новый пароль должен содержать не менее 12 символов.',
+            ]);
         $user = $request->user();
         $user->password = $validated['password'];
         $user->save();
+
         return redirect()->route('profile.edit')->with('password_success', 'Пароль успешно изменён.');
     }
 
@@ -94,7 +96,7 @@ class EmployeeController extends Controller
         $rules = [
             'phone' => ['nullable', 'string', 'max:30'],
             'position' => ['nullable', 'string', 'max:255'],
-            'department' => ['nullable', 'string', 'max:255']
+            'department' => ['nullable', 'string', 'max:255'],
         ];
         if ($isAdmin) {
             $rules['name'] = ['required', 'string', 'max:255'];
@@ -112,7 +114,7 @@ class EmployeeController extends Controller
             'department.max' => 'Название отдела слишком длинное.',
             'avatar.image' => 'Загрузите корректное изображение.',
             'avatar.mimes' => 'Допустимые форматы фотографии: JPEG, PNG и WebP.',
-            'avatar.max' => 'Размер фотографии не должен превышать 2 МБ.'
+            'avatar.max' => 'Размер фотографии не должен превышать 2 МБ.',
         ];
 
         $validated = $request->validate($rules, $messages);
@@ -136,6 +138,7 @@ class EmployeeController extends Controller
         if ($newAvatarPath !== null && $oldAvatarPath !== null && $oldAvatarPath !== $newAvatarPath) {
             Storage::disk('public')->delete($oldAvatarPath);
         }
+
         return redirect()->route($redirectRoute, $isEmployeeEdit ? $employee->id : [])->with('success', 'Профиль успешно сохранён.');
     }
 
@@ -152,6 +155,7 @@ class EmployeeController extends Controller
         if ($avatarPath) {
             Storage::disk('public')->delete($avatarPath);
         }
+
         return redirect()->route('employees.index')->with('success', 'Сотрудник успешно удалён.');
     }
 }
