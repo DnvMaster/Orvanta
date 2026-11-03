@@ -12,7 +12,12 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('throttle:5,1')->name('login.store');
 });
 
-Route::middleware(['auth', 'active'])->group(function () {
+Route::middleware(['auth', 'active'])->prefix('password/initial')->name('password.initial.')->group(function () {
+    Route::get('/', [EmployeeController::class, 'editInitialPassword'])->name('edit');
+    Route::put('/', [EmployeeController::class, 'updateInitialPassword'])->name('update');
+});
+
+Route::middleware(['auth', 'active', 'password.changed'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/', [EmployeeController::class, 'editProfile'])->name('edit');

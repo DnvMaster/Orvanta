@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'role', 'status', 'phone', 'position', 'department', 'department_id', 'manager_id', 'avatar_path', 'invited_at'])]
+#[Fillable(['name', 'email', 'password', 'must_change_password', 'role', 'status', 'phone', 'position', 'department', 'department_id', 'manager_id', 'avatar_path', 'invited_at'])]
 #[Hidden(['password', 'remember_token'])]
 
 class User extends Authenticatable
@@ -22,7 +22,7 @@ class User extends Authenticatable
 
     protected function casts(): array
     {
-        return ['email_verified_at' => 'datetime', 'invited_at' => 'datetime', 'password' => 'hashed'];
+        return ['email_verified_at' => 'datetime', 'invited_at' => 'datetime', 'password' => 'hashed', 'must_change_password' => 'boolean'];
     }
 
     public function organizationalDepartment(): BelongsTo

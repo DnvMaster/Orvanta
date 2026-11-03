@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -17,7 +19,8 @@ class EmployeeController extends Controller
 {
     public function index(): View
     {
-        $employees = User::query()->select(['id', 'name', 'email', 'role', 'status', 'phone', 'position', 'department', 'avatar_path', 'created_at'])->orderBy('name')->paginate(15);
+        $activeSince = now()->subMinutes(config('session.lifetime'))->timestamp;
+        $employees = User::query()->select(['id', 'name', 'email', 'role', 'status', 'phone', 'position', 'department', 'avatar_path', 'created_at'])->selectRaw('EXISTS (SELECT 1 FROM sessions WHERE sessions.user_id = users.id AND sessions.last_activity >= ?) AS is_online', [$activeSince])->orderBy('name')->paginate(15);
 
         return view('orvanta.employees.index', ['employees' => $employees]);
     }
@@ -37,16 +40,23 @@ class EmployeeController extends Controller
             'department' => ['nullable', 'string', 'max:255'],
         ]);
         $temporaryPassword = Str::password(16);
-        $employee = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'phone' => $validated['phone'] ?? null,
-            'position' => $validated['position'] ?? null,
-            'department' => $validated['department'] ?? null,
-            'role' => 'employee',
-            'status' => 'active',
-            'password' => $temporaryPassword,
-        ]);
+        $employee = DB::transaction(function () use ($validated, $temporaryPassword) {
+            $employee = User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone'] ?? null,
+                'position' => $validated['position'] ?? null,
+                'department' => $validated['department'] ?? null,
+                'role' => 'employee',
+                'status' => 'active',
+                'password' => $temporaryPassword,
+                'must_change_password' => true,
+            ]);
+            $employeeRole = Role::where('slug', 'employee')->firstOrFail();
+            $employee->roles()->attach($employeeRole->id);
+
+            return $employee;
+        });
 
         return redirect()->route('employees.index')->with('success', 'Сотрудник успешно создан.')->with('temporary_password', $temporaryPassword)->with('created_employee_email', $employee->email);
     }
@@ -78,6 +88,39 @@ class EmployeeController extends Controller
         $user->save();
 
         return redirect()->route('profile.edit')->with('password_success', 'Пароль успешно изменён.');
+    }
+
+    public function editInitialPassword(Request $request): View|RedirectResponse
+    {
+        if (! $request->user()->must_change_password) {
+            return redirect()->route('dashboard');
+        }
+
+        return view('orvanta.auth.initial-password');
+    }
+
+    public function updateInitialPassword(Request $request): RedirectResponse
+    {
+        if (! $request->user()->must_change_password) {
+            return redirect()->route('dashboard');
+        }
+        $validated = $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', 'confirmed', 'different:current_password', Password::min(12)],
+        ], [
+            'current_password.required' => 'Введите первоначальный пароль.',
+            'current_password.current_password' => 'Первоначальный пароль указан неверно.',
+            'password.required' => 'Введите новый пароль.',
+            'password.confirmed' => 'Подтверждение нового пароля не совпадает.',
+            'password.different' => 'Новый пароль должен отличаться от первоначального.',
+            'password.min' => 'Новый пароль должен содержать не менее 12 символов.',
+        ]);
+        $user = $request->user();
+        $user->password = $validated['password'];
+        $user->must_change_password = false;
+        $user->save();
+
+        return redirect()->route('dashboard')->with('success', 'Пароль успешно изменён.');
     }
 
     public function edit(User $employee): View

@@ -80,10 +80,12 @@
                                     <td>{{ $employee->department ?: '—' }}</td>
                                     <td>{{ $employee->role === 'admin' ? 'Администратор' : 'Сотрудник' }}</td>
                                     <td>
-                                        @if ($employee->status === 'active')
-                                            <span class="badge text-bg-success">Активен</span>
+                                        @if ($employee->status !== 'active')
+                                            <span class="badge text-bg-danger">Заблокирован</span>
+                                        @elseif ($employee->is_online)
+                                            <span class="badge text-bg-success">В сети</span>
                                         @else
-                                            <span class="badge text-bg-secondary">Заблокирован</span>
+                                            <span class="badge text-bg-secondary">Не в сети</span>
                                         @endif
                                     </td>
                                     <td class="text-nowrap">
