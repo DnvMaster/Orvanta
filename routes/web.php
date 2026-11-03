@@ -1,10 +1,10 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\DealController;
 use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DealController;
+use App\Http\Controllers\EmployeeController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -12,7 +12,12 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('throttle:5,1')->name('login.store');
 });
 
-Route::middleware(['auth', 'active'])->group(function () {
+Route::middleware(['auth', 'active'])->prefix('password/initial')->name('password.initial.')->group(function () {
+    Route::get('/', [EmployeeController::class, 'editInitialPassword'])->name('edit');
+    Route::put('/', [EmployeeController::class, 'updateInitialPassword'])->name('update');
+});
+
+Route::middleware(['auth', 'active', 'password.changed'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/', [EmployeeController::class, 'editProfile'])->name('edit');
@@ -26,6 +31,7 @@ Route::middleware(['auth', 'active'])->group(function () {
         Route::post('/', [EmployeeController::class, 'store'])->name('store');
         Route::get('/{employee}/edit', [EmployeeController::class, 'edit'])->name('edit');
         Route::put('/{employee}', [EmployeeController::class, 'update'])->name('update');
+        Route::delete('/{employee}', [EmployeeController::class, 'destroy'])->name('destroy');
     });
 
     Route::prefix('deals')->name('deals.')->group(function () {

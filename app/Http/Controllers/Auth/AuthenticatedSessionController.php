@@ -18,12 +18,18 @@ class AuthenticatedSessionController extends Controller
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
-            'password' => ['required', 'string']
+            'password' => ['required', 'string'],
         ]);
-        if (!Auth::attempt($credentials, $request->boolean('remember'))) {
-            throw ValidationException::withMessages(['email' => 'Неверный адрес электронной почты или пароль.']);
+        if (! Auth::attempt($credentials, $request->boolean('remember'))) {
+            throw ValidationException::withMessages([
+                'email' => 'Неверный адрес электронной почты или пароль.',
+            ]);
         }
         $request->session()->regenerate();
+        if ($request->user()->must_change_password) {
+            return redirect()->route('password.initial.edit');
+        }
+
         return redirect()->intended('/');
     }
 
@@ -32,6 +38,7 @@ class AuthenticatedSessionController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect()->route('login');
     }
 }
