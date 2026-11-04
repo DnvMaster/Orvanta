@@ -1,7 +1,7 @@
 # 📦 Orvanta CRM - Развивайся Управляй Достигай
 ---
 
-## Web Разработка
+## Веб разработка
 
 * **Николай Демко** ([@github_dnmaster](https://github.com/dnvmaster)
 
@@ -45,5 +45,10 @@
 ---
 
 #### 5. Накат миграций и наполнение базы
-** *Выполните в консоле Open Server команду php artisan migrate
+** *Выполните в консоле Open Server команду  php  artisan  migrate
 
+## License
+
+* Orvanta CRM — Проприетарное программное обеспечение. Все права защищены.
+
+* Подробности см. в файле license.md.
