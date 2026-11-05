@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\EmployeeController;
@@ -44,6 +45,7 @@ Route::middleware(['auth', 'active', 'password.changed'])->group(function () {
     });
 
     Route::resource('companies', CompanyController::class);
+    Route::resource('contacts', ContactController::class);
 
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });

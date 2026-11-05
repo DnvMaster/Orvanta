@@ -24,6 +24,12 @@
             <span class="nav-icon">▣</span>
             <span class="nav-label">Компании</span>
         </a>
+        @can('viewAny', \App\Models\Contact::class)
+            <a href="{{ route('contacts.index') }}" class="nav-item {{ request()->routeIs('contacts.*') ? 'active' : '' }}" title="Контакты">
+                <span class="nav-icon">♧</span>
+                <span class="nav-label">Контакты</span>
+            </a>
+        @endcan
         <a href="{{ route('deals.index') }}" class="nav-item {{ request()->routeIs('deals.*') ? 'active' : '' }}" title="Сделки">
             <span class="nav-icon">◇</span>
             <span class="nav-label">Сделки</span>
