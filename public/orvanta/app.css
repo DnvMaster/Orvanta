@@ -679,3 +679,477 @@ button {
         gap: 6px;
     }
 }
+
+/* ========================================
+   ORVANTA CRM DnvMaaster — CLIENT BASE
+   ======================================== */
+
+.client-base {
+    width: 100%;
+    max-width: 1250px;
+    margin: 0 auto;
+}
+
+.client-base-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.client-base-heading h1 {
+    margin: 0;
+    color: var(--orvanta-graphite);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.8px;
+}
+
+.client-add-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 0 17px;
+    border: 1px solid var(--orvanta-green);
+    border-radius: 7px;
+    background: var(--orvanta-green);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: .2s ease;
+}
+
+.client-add-button:hover {
+    background: #116d56;
+    border-color: #116d56;
+    color: #fff;
+}
+
+/* Основная панель */
+
+.client-panel {
+    overflow: hidden;
+    border: 1px solid var(--orvanta-border);
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 3px 12px rgb(30 50 40 / 3%);
+}
+
+/* Вкладки */
+
+.client-tabs {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    min-height: 53px;
+    padding: 0 24px;
+    border-bottom: 1px solid var(--orvanta-border);
+}
+
+.client-tab {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 53px;
+    color: #7b8782;
+    font-size: 12px;
+    font-weight: 500;
+    transition: color .2s ease;
+}
+
+.client-tab:hover {
+    color: var(--orvanta-green);
+}
+
+.client-tab.active {
+    color: var(--orvanta-green);
+    font-weight: 700;
+}
+
+.client-tab.active::after {
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    background: var(--orvanta-green);
+    content: "";
+}
+
+.client-tab-count {
+    padding: 3px 7px;
+    border-radius: 10px;
+    background: var(--orvanta-green-light);
+    color: var(--orvanta-green);
+    font-size: 10px;
+}
+
+/* Поиск и панель управления */
+
+.client-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 19px 24px;
+}
+
+.client-search-form {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+    flex: 1;
+}
+
+.client-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: min(100%, 390px);
+    min-height: 39px;
+    padding: 0 12px;
+    border: 1px solid #e2e8e4;
+    border-radius: 6px;
+    background: #fff;
+    color: #929d97;
+    transition: border-color .2s ease;
+}
+
+.client-search:focus-within {
+    border-color: var(--orvanta-green);
+}
+
+.client-search input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--orvanta-text);
+    font-size: 11px;
+}
+
+.client-search input::placeholder {
+    color: #a0aaa4;
+}
+
+.client-filter-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 39px;
+    padding: 0 13px;
+    border: 1px solid #e2e8e4;
+    border-radius: 6px;
+    background: white;
+    color: var(--orvanta-graphite);
+    font-size: 11px;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.client-filter-button:hover {
+    border-color: var(--orvanta-green);
+    color: var(--orvanta-green);
+}
+
+.client-reset-button {
+    color: var(--orvanta-muted);
+    font-size: 11px;
+}
+
+.client-reset-button:hover {
+    color: var(--orvanta-green);
+}
+
+.client-results-count {
+    color: var(--orvanta-muted);
+    font-size: 11px;
+}
+
+.client-results-count strong {
+    color: var(--orvanta-graphite);
+}
+
+/* Таблица */
+
+.client-table-wrapper {
+    width: 100%;
+}
+
+.client-table {
+    width: 100%;
+    margin: 0;
+    border-collapse: collapse;
+    color: var(--orvanta-text);
+}
+
+.client-table thead {
+    background: #f7f9f8;
+}
+
+.client-table th {
+    padding: 13px 17px;
+    border-top: 1px solid #edf0ee;
+    border-bottom: 1px solid #e9eeeb;
+    color: #7b8782;
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.client-table td {
+    padding: 13px 17px;
+    border-bottom: 1px solid #edf0ee;
+    vertical-align: middle;
+    font-size: 11px;
+}
+
+.client-table tbody tr {
+    transition: background .15s ease;
+}
+
+.client-table tbody tr:hover {
+    background: #fafcfb;
+}
+
+.client-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+/* Контакт и аватар */
+
+.client-contact {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 190px;
+}
+
+.client-avatar {
+    display: grid;
+    flex: 0 0 35px;
+    width: 35px;
+    height: 35px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--orvanta-green-light);
+    color: var(--orvanta-green);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.client-contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.client-contact-name {
+    color: var(--orvanta-graphite);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.client-contact-name a:hover {
+    color: var(--orvanta-green);
+}
+
+.client-contact-email {
+    overflow: hidden;
+    color: var(--orvanta-muted);
+    font-size: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.client-phone {
+    color: #477f70;
+    white-space: nowrap;
+}
+
+.client-phone:hover {
+    color: var(--orvanta-green);
+}
+
+.client-company {
+    color: #49564f;
+    font-weight: 500;
+}
+
+.client-muted {
+    color: #a0aaa4;
+}
+
+.client-date {
+    color: var(--orvanta-graphite);
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.client-time {
+    margin-top: 4px;
+    color: var(--orvanta-muted);
+    font-size: 10px;
+}
+
+/* Действия */
+
+.client-actions {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+.client-actions form {
+    margin: 0;
+}
+
+.client-action {
+    display: grid;
+    width: 29px;
+    height: 29px;
+    place-items: center;
+    border: 1px solid #e8eeea;
+    border-radius: 5px;
+    background: #fff;
+    color: #77837c;
+    font-size: 12px;
+    transition: .2s ease;
+}
+
+.client-action:hover {
+    border-color: var(--orvanta-green);
+    background: var(--orvanta-green-light);
+    color: var(--orvanta-green);
+}
+
+.client-action-delete:hover {
+    border-color: #e9caca;
+    background: #fff3f3;
+    color: #cf5050;
+}
+
+/* Пустая база */
+
+.client-empty {
+    display: flex;
+    min-height: 270px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 35px 20px;
+    text-align: center;
+}
+
+.client-empty-icon {
+    display: grid;
+    width: 52px;
+    height: 52px;
+    place-items: center;
+    border-radius: 13px;
+    background: var(--orvanta-green-light);
+    color: var(--orvanta-green);
+    font-size: 23px;
+}
+
+.client-empty h3 {
+    margin: 17px 0 7px;
+    color: var(--orvanta-graphite);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.client-empty p {
+    margin: 0;
+    color: var(--orvanta-muted);
+    font-size: 12px;
+}
+
+/* Пагинация */
+
+.client-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 15px 24px;
+    border-top: 1px solid var(--orvanta-border);
+}
+
+.client-pagination-info {
+    color: var(--orvanta-muted);
+    font-size: 10px;
+}
+
+.client-pagination-info strong {
+    color: var(--orvanta-graphite);
+}
+
+/* Адаптивность */
+
+@media (max-width: 900px) {
+    .client-toolbar {
+        align-items: flex-start;
+    }
+
+    .client-search-form {
+        width: 100%;
+    }
+
+    .client-results-count {
+        width: 100%;
+    }
+}
+
+@media (max-width: 700px) {
+    .client-base-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .client-base-heading h1 {
+        font-size: 24px;
+    }
+
+    .client-tabs {
+        gap: 20px;
+        padding: 0 15px;
+    }
+
+    .client-toolbar {
+        padding: 15px;
+    }
+
+    .client-search-form {
+        align-items: stretch;
+    }
+
+    .client-search {
+        width: 100%;
+    }
+
+    .client-filter-button {
+        flex: 1;
+    }
+
+    .client-table {
+        min-width: 760px;
+    }
+
+    .client-pagination {
+        padding: 14px 15px;
+    }
+}

@@ -1,4 +1,4 @@
-# Orvanta CRM — Proprietary Software License
+# Orvanta CRM — Проприетарная лицензия Orvanta CRM
 
 ## 1. Общие положения
 
