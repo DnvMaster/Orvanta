@@ -45,6 +45,8 @@ Route::middleware(['auth', 'active', 'password.changed'])->group(function () {
     });
 
     Route::resource('companies', CompanyController::class);
+    Route::get('contacts/search', [ContactController::class, 'search'])->name('contacts.search');
+    Route::post('contacts/quick-store', [ContactController::class, 'quickStore'])->name('contacts.quick-store');
     Route::resource('contacts', ContactController::class);
 
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');

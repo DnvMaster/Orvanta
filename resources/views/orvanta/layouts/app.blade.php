@@ -60,5 +60,6 @@
     </div>
     <script src="{{ asset('orvanta/js/sidebar.js') }}" defer></script>
     <script src="{{ asset('orvanta/js/preloader.js') }}" defer></script>
+    <script src="{{ asset('orvanta/js/deal-contact-search.js') }}" defer></script>
 </body>
 </html>
