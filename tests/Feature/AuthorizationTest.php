@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Models\Company;
-use App\Models\Permission;
-use App\Models\Department;
-use App\Models\Role;
-use App\Models\User;
 use App\Models\Contact;
+use App\Models\Deal;
+use App\Models\Department;
+use App\Models\Permission;
 use App\Models\Pipeline;
 use App\Models\PipelineStage;
-use App\Models\Deal;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -95,12 +95,12 @@ class AuthorizationTest extends TestCase
     {
         $role = Role::query()->forceCreate([
             'name' => 'Test Role',
-            'slug' => 'test-role-' . $user->id . '-' . str_replace('.', '-', $permissionSlug) . '-' . $scope
+            'slug' => 'test-role-'.$user->id.'-'.str_replace('.', '-', $permissionSlug).'-'.$scope,
         ]);
         $permission = Permission::query()->forceCreate([
             'name' => 'Test Permission',
             'slug' => $permissionSlug,
-            'group' => explode('.', $permissionSlug)[0]
+            'group' => explode('.', $permissionSlug)[0],
         ]);
         $role->permissions()->attach($permission->id, ['scope' => $scope]);
         $user->roles()->attach($role->id);
@@ -148,12 +148,12 @@ class AuthorizationTest extends TestCase
     public function test_manager_can_view_contacts_in_own_and_child_departments(): void
     {
         $manager = $this->createUserWithPermission('contacts.view', 'department');
-        $mainDepartment = Department::query()->forceCreate(['name' => 'Main Contact Department',]);
-        $childDepartment = Department::query()->forceCreate(['name' => 'Child Contact Department','parent_id' => $mainDepartment->id,]);
-        $otherDepartment = Department::query()->forceCreate(['name' => 'Other Contact Department',]);
+        $mainDepartment = Department::query()->forceCreate(['name' => 'Main Contact Department']);
+        $childDepartment = Department::query()->forceCreate(['name' => 'Child Contact Department', 'parent_id' => $mainDepartment->id]);
+        $otherDepartment = Department::query()->forceCreate(['name' => 'Other Contact Department']);
         $manager->update(['department_id' => $mainDepartment->id]);
-        $childEmployee = User::factory()->create(['department_id' => $childDepartment->id,]);
-        $otherEmployee = User::factory()->create(['department_id' => $otherDepartment->id,]);
+        $childEmployee = User::factory()->create(['department_id' => $childDepartment->id]);
+        $otherEmployee = User::factory()->create(['department_id' => $otherDepartment->id]);
         $ownContact = $this->createContactFor($manager);
         $childContact = $this->createContactFor($childEmployee);
         $otherContact = $this->createContactFor($otherEmployee);
@@ -186,38 +186,42 @@ class AuthorizationTest extends TestCase
     {
         $user = User::factory()->create();
         $this->grantPermission($user, $permissionSlug, $scope);
+
         return $user;
     }
 
     private function createCompanyFor(User $user): Company
     {
-        $company = Company::create(['name' => 'Test Company ' . $user->id]);
+        $company = Company::create(['name' => 'Test Company '.$user->id]);
         $company->responsible()->associate($user);
         $company->save();
+
         return $company;
     }
 
     private function createContactFor(User $user): Contact
     {
-        $contact = Contact::create(['first_name' => 'Test','last_name' => 'Contact ' . $user->id]);
+        $contact = Contact::create(['first_name' => 'Test', 'last_name' => 'Contact '.$user->id]);
         $contact->responsible()->associate($user);
         $contact->save();
+
         return $contact;
     }
 
     private function createDealFor(User $user, array $attributes = []): Deal
     {
         $pipeline = Pipeline::create(['name' => 'Test Pipeline']);
-        $stage = PipelineStage::create(['pipeline_id' => $pipeline->id,'name' => 'Test Stage','position' => 1]);
+        $stage = PipelineStage::create(['pipeline_id' => $pipeline->id, 'name' => 'Test Stage', 'position' => 1]);
         $deal = Deal::create(array_merge([
             'pipeline_id' => $pipeline->id,
             'pipeline_stage_id' => $stage->id,
             'title' => 'Test Deal',
             'amount' => 1000,
-            'currency' => 'RUB'
+            'currency' => 'RUB',
         ], $attributes));
         $deal->responsible()->associate($user);
         $deal->save();
+
         return $deal;
     }
 
@@ -225,16 +229,55 @@ class AuthorizationTest extends TestCase
     {
         $manager = $this->createUserWithPermission('companies.view', 'department');
         $mainDepartment = Department::query()->forceCreate(['name' => 'Main Test Department']);
-        $childDepartment = Department::query()->forceCreate(['name' => 'Child Test Department','parent_id' => $mainDepartment->id]);
+        $childDepartment = Department::query()->forceCreate(['name' => 'Child Test Department', 'parent_id' => $mainDepartment->id]);
         $otherDepartment = Department::query()->forceCreate(['name' => 'Other Test Department']);
-        $manager->update(['department_id' => $mainDepartment->id,]);
+        $manager->update(['department_id' => $mainDepartment->id]);
         $childEmployee = User::factory()->create(['department_id' => $childDepartment->id]);
-        $otherEmployee = User::factory()->create(['department_id' => $otherDepartment->id,]);
+        $otherEmployee = User::factory()->create(['department_id' => $otherDepartment->id]);
         $ownCompany = $this->createCompanyFor($manager);
         $childCompany = $this->createCompanyFor($childEmployee);
         $otherCompany = $this->createCompanyFor($otherEmployee);
         $this->assertTrue($manager->can('view', $ownCompany));
         $this->assertTrue($manager->can('view', $childCompany));
         $this->assertFalse($manager->can('view', $otherCompany));
+    }
+
+    public function test_employee_can_search_own_contact_by_phone(): void
+    {
+        $employee = $this->createUserWithPermission('contacts.view', 'own');
+        $contact = $this->createContactFor($employee);
+        $contact->update(['phone' => '+7 999 123-45-67']);
+        $this->actingAs($employee)->getJson(route('contacts.search', ['phone' => '89991234567']))->assertOk()->assertJsonPath('supported', true)->assertJsonCount(1, 'matches')->assertJsonPath('matches.0.id', $contact->id);
+    }
+
+    public function test_employee_cannot_search_another_employees_contact(): void
+    {
+        $employee = $this->createUserWithPermission('contacts.view', 'own');
+        $anotherEmployee = User::factory()->create();
+        $contact = $this->createContactFor($anotherEmployee);
+        $contact->update(['phone' => '+7 999 123-45-67']);
+        $this->actingAs($employee)->getJson(route('contacts.search', ['phone' => '+7 999 123-45-67']))->assertOk()->assertJsonCount(0, 'matches');
+    }
+
+    public function test_employee_cannot_search_contact_with_inaccessible_company(): void
+    {
+        $employee = $this->createUserWithPermission('contacts.view', 'own');
+        $companyOwner = User::factory()->create();
+        $company = $this->createCompanyFor($companyOwner);
+        $contact = Contact::create([
+            'first_name' => 'Test',
+            'last_name' => 'Contact',
+            'company_id' => $company->id,
+            'phone' => '+7 999 123-45-67',
+        ]);
+        $contact->responsible()->associate($employee);
+        $contact->save();
+        $this->actingAs($employee)->getJson(route('contacts.search', ['phone' => '+7 999 123-45-67']))->assertOk()->assertJsonCount(0, 'matches');
+    }
+
+    public function test_search_returns_empty_matches_for_unsupported_phone(): void
+    {
+        $employee = $this->createUserWithPermission('contacts.view', 'own');
+        $this->actingAs($employee)->getJson(route('contacts.search', ['phone' => '+1 202 555 0123']))->assertOk()->assertJsonPath('supported', false)->assertJsonCount(0, 'matches');
     }
 }
