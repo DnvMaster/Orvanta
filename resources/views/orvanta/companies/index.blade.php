@@ -3,14 +3,7 @@
 @section('breadcrumb', 'Компании')
 @section('content')
     <section class="dashboard-content">
-        <div class="page-heading">
-            <div>
-                <p class="eyebrow">УПРАВЛЕНИЕ КЛИЕНТАМИ</p>
-                <h1>Компании</h1>
-                <p class="page-description">Компании, их реквизиты и деловые отношения в Orvanta.</p>
-            </div>
-            <div class="page-date">Всего: {{ $companies->total() }}</div>
-        </div>
+        @include('orvanta.partials.client-base-heading')
         <section class="panel">
             @if (session('success'))
                 <div class="alert alert-success m-4 mb-0" role="status">

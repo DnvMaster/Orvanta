@@ -2,16 +2,7 @@
 @section('title', 'Контакты — Orvanta CRM')
 @section('content')
     <section class="dashboard-content">
-        <div class="page-heading">
-            <div>
-                <div class="eyebrow">УПРАВЛЕНИЕ КЛИЕНТАМИ</div>
-                <h1>Контакты</h1>
-                <p class="page-description"> Контактные лица и информация о взаимодействии с клиентами.</p>
-            </div>
-            @can('create', \App\Models\Contact::class)
-                <a href="{{ route('contacts.create') }}" class="btn btn-success"><i class="bi bi-plus-lg me-1"></i>Добавить контакт</a>
-            @endcan
-        </div>
+        @include('orvanta.partials.client-base-heading')
         <div class="panel">
             <div class="panel-header d-flex flex-wrap justify-content-between align-items-center gap-3">
                 <div>

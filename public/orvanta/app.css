@@ -683,7 +683,6 @@ button {
 /* ========================================
    ORVANTA CRM DnvMaaster — CLIENT BASE
    ======================================== */
-
 .client-base {
     width: 100%;
     max-width: 1250px;
@@ -729,8 +728,6 @@ button {
     color: #fff;
 }
 
-/* Основная панель */
-
 .client-panel {
     overflow: hidden;
     border: 1px solid var(--orvanta-border);
@@ -738,8 +735,6 @@ button {
     background: #fff;
     box-shadow: 0 3px 12px rgb(30 50 40 / 3%);
 }
-
-/* Вкладки */
 
 .client-tabs {
     display: flex;
@@ -788,8 +783,6 @@ button {
     color: var(--orvanta-green);
     font-size: 10px;
 }
-
-/* Поиск и панель управления */
 
 .client-toolbar {
     display: flex;
@@ -879,8 +872,6 @@ button {
     color: var(--orvanta-graphite);
 }
 
-/* Таблица */
-
 .client-table-wrapper {
     width: 100%;
 }
@@ -924,8 +915,6 @@ button {
 .client-table tbody tr:last-child td {
     border-bottom: 0;
 }
-
-/* Контакт и аватар */
 
 .client-contact {
     display: flex;
@@ -1002,8 +991,6 @@ button {
     font-size: 10px;
 }
 
-/* Действия */
-
 .client-actions {
     display: inline-flex;
     align-items: center;
@@ -1040,8 +1027,6 @@ button {
     color: #cf5050;
 }
 
-/* Пустая база */
-
 .client-empty {
     display: flex;
     min-height: 270px;
@@ -1076,8 +1061,6 @@ button {
     font-size: 12px;
 }
 
-/* Пагинация */
-
 .client-pagination {
     display: flex;
     align-items: center;
@@ -1096,8 +1079,6 @@ button {
 .client-pagination-info strong {
     color: var(--orvanta-graphite);
 }
-
-/* Адаптивность */
 
 @media (max-width: 900px) {
     .client-toolbar {
@@ -1151,5 +1132,230 @@ button {
 
     .client-pagination {
         padding: 14px 15px;
+    }
+}
+
+.nav-submenu {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin: -1px 0 5px 22px;
+    padding-left: 12px;
+    border-left: 1px solid #e7ede9;
+}
+
+.nav-subitem {
+    min-height: 36px;
+    padding: 0 10px;
+    gap: 10px;
+    font-size: 13px;
+}
+
+.nav-subitem .nav-icon {
+    flex-basis: 18px;
+    width: 18px;
+    font-size: 14px;
+}
+
+.sidebar-collapsed .nav-submenu {
+    margin: 0 0 5px;
+    padding: 0;
+    border-left: 0;
+    gap: 4px;
+}
+
+.sidebar-collapsed .nav-subitem {
+    justify-content: center;
+    gap: 0;
+    padding: 0;
+}
+
+.nav-parent {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.nav-arrow {
+    margin-left: auto;
+    font-size: 16px;
+    transition: transform 0.2s ease;
+}
+
+.nav-parent[aria-expanded="false"] .nav-arrow {
+    transform: rotate(-90deg);
+}
+
+.nav-submenu[hidden] {
+    display: none;
+}
+
+.sidebar-collapsed .nav-arrow {
+    display: none;
+}
+
+.client-base-hero {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    min-height: 255px;
+    margin: -34px -32px 8px;
+    padding: 27px 32px 0;
+    overflow: hidden;
+    background:
+        radial-gradient(
+            ellipse at 80% 70%,
+            rgba(191, 235, 216, .55),
+            transparent 45%
+        ),
+        linear-gradient(110deg, #fff 0%, #f7faf9 65%, #edf8f2 100%);
+}
+
+.client-base-hero-content {
+    position: relative;
+    z-index: 2;
+    width: 65%;
+}
+
+.client-base-hero-content h1 {
+    margin: 8px 0 10px;
+    color: #101a31;
+    font-size: 46px;
+    font-weight: 750;
+    letter-spacing: -1.5px;
+}
+
+.client-base-hero-content > p {
+    margin: 0;
+    color: #455064;
+    font-size: 19px;
+}
+
+.client-base-hero-image {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    width: 46%;
+    height: 255px;
+    pointer-events: none;
+}
+
+.client-base-hero-image::before {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+        90deg,
+        #f8faf9 0%,
+        rgba(248, 250, 249, .25) 35%,
+        transparent 75%
+    );
+    content: "";
+}
+
+.client-base-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: drop-shadow(12px 10px 18px rgba(30, 75, 58, .16));
+}
+
+.client-base-tabs {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    gap: 0;
+    margin-top: 35px;
+}
+
+.client-base-tab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-width: 192px;
+    min-height: 55px;
+    padding: 0 22px;
+    border: 1px solid #e0e6ec;
+    border-radius: 12px;
+    background: rgba(238, 242, 247, .88);
+    color: #303b50;
+    font-size: 17px;
+    font-weight: 600;
+    transition: .2s ease;
+}
+
+.client-base-tab + .client-base-tab {
+    margin-left: -1px;
+}
+
+.client-base-tab i {
+    font-size: 21px;
+}
+
+.client-base-tab.active {
+    border-color: #009e60;
+    background: #009e60;
+    color: #fff;
+}
+
+.client-base-tab:not(.active):hover {
+    background: #e5f4eb;
+    color: #008b50;
+}
+
+@media (max-width: 1100px) {
+    .client-base-hero-content h1 {
+        font-size: 38px;
+    }
+
+    .client-base-hero-image {
+        width: 42%;
+    }
+}
+
+@media (max-width: 700px) {
+    .client-base-hero {
+        min-height: 235px;
+        margin: -26px -16px 8px;
+        padding: 24px 16px 0;
+    }
+
+    .client-base-hero-content {
+        width: 100%;
+    }
+
+    .client-base-hero-content h1 {
+        font-size: 29px;
+    }
+
+    .client-base-hero-content > p {
+        max-width: 75%;
+        font-size: 13px;
+    }
+
+    .client-base-hero-image {
+        width: 48%;
+        height: 170px;
+        opacity: .65;
+    }
+
+    .client-base-tabs {
+        margin-top: 25px;
+    }
+
+    .client-base-tab {
+        min-width: 0;
+        flex: 1;
+        min-height: 46px;
+        padding: 0 12px;
+        font-size: 13px;
     }
 }

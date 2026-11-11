@@ -18,18 +18,32 @@
             <span class="nav-icon">♙</span>
             <span class="nav-label">Сотрудники</span>
         </a>
-        <a href="{{ route('companies.index') }}"
-           class="nav-item {{ request()->routeIs('companies.*') ? 'active' : '' }}"
-           title="Компании">
-            <span class="nav-icon">▣</span>
-            <span class="nav-label">Компании</span>
-        </a>
-        @can('viewAny', \App\Models\Contact::class)
-            <a href="{{ route('contacts.index') }}" class="nav-item {{ request()->routeIs('contacts.*') ? 'active' : '' }}" title="Контакты">
-                <span class="nav-icon">♧</span>
-                <span class="nav-label">Контакты</span>
-            </a>
-        @endcan
+        @php
+            $canViewCompanies = auth()->user()->can('viewAny', \App\Models\Company::class);
+            $canViewContacts = auth()->user()->can('viewAny', \App\Models\Contact::class);
+            $clientBaseActive = request()->routeIs('companies.*') || request()->routeIs('contacts.*');
+        @endphp
+        @if($canViewCompanies || $canViewContacts)
+            <button type="button" class="nav-item nav-parent {{ $clientBaseActive ? 'active' : '' }}" id="clientBaseToggle" aria-expanded="true" aria-controls="clientBaseSubmenu" title="Клиентская база">
+                <span class="nav-icon">▣</span>
+                <span class="nav-label">Клиентская база</span>
+                <span class="nav-arrow" aria-hidden="true">⌄</span>
+            </button>
+            <div class="nav-submenu" id="clientBaseSubmenu">
+                @if($canViewCompanies)
+                    <a href="{{ route('companies.index') }}" class="nav-item nav-subitem {{ request()->routeIs('companies.*') ? 'active' : '' }}" title="Компании" aria-current="{{ request()->routeIs('companies.*') ? 'page' : 'false' }}">
+                        <span class="nav-icon">▣</span>
+                        <span class="nav-label">Компании</span>
+                    </a>
+                @endif
+                @if($canViewContacts)
+                    <a href="{{ route('contacts.index') }}" class="nav-item nav-subitem {{ request()->routeIs('contacts.*') ? 'active' : '' }}" title="Контакты" aria-current="{{ request()->routeIs('contacts.*') ? 'page' : 'false' }}">
+                        <span class="nav-icon">♧</span>
+                        <span class="nav-label">Контакты</span>
+                    </a>
+                @endif
+            </div>
+        @endif
         <a href="{{ route('deals.index') }}" class="nav-item {{ request()->routeIs('deals.*') ? 'active' : '' }}" title="Сделки">
             <span class="nav-icon">◇</span>
             <span class="nav-label">Сделки</span>
