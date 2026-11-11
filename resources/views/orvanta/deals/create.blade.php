@@ -55,12 +55,45 @@
                             @enderror
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="deal-contact" class="form-label">Контакт</label>
+                            <label for="contact-phone-search" class="form-label">Поиск контакта по телефону</label>
+                            <div class="input-group">
+                                <input type="tel" id="contact-phone-search" class="form-control" placeholder="+7 999 123-45-67 или +375 29 123-45-67" maxlength="30">
+                                <button type="button" id="contact-phone-search-button" class="btn btn-outline-primary" data-search-url="{{ route('contacts.search') }}">Найти</button>
+                            </div>
+                            <div id="contact-search-status" class="alert alert-success mt-2" role="status" aria-live="polite" hidden></div>
+                            <div id="quick-contact-form" class="border rounded p-3 mt-3" hidden>
+                                <h3 class="h6 mb-3">Создать новый контакт</h3>
+                                <div class="mb-3">
+                                    <label for="quick-contact-last-name" class="form-label">Фамилия *</label>
+                                    <input type="text" id="quick-contact-last-name" class="form-control" maxlength="255">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="quick-contact-first-name" class="form-label">Имя *</label>
+                                    <input type="text" id="quick-contact-first-name" class="form-control" maxlength="255">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="quick-contact-middle-name" class="form-label">Отчество</label>
+                                    <input type="text" id="quick-contact-middle-name" class="form-control" maxlength="255">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="quick-contact-phone" class="form-label">Телефон</label>
+                                    <input type="tel" id="quick-contact-phone" class="form-control" maxlength="50">
+                                </div>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <button type="button" id="quick-contact-save" class="btn btn-success" data-store-url="{{ route('contacts.quick-store') }}">Создать контакт</button>
+                                    <button type="button" id="quick-contact-cancel" class="btn btn-outline-secondary">Отмена</button>
+                                </div>
+                                <div id="quick-contact-status" class="form-text mt-2" aria-live="polite"></div>
+                            </div>
+                            <label for="deal-contact" class="form-label mt-3">Контакт сделки</label>
                             <select id="deal-contact" name="contact_id" class="form-select @error('contact_id') is-invalid @enderror">
                                 <option value="">Без контакта</option>
                                 @foreach ($contacts as $contact)
-                                    <option value="{{ $contact->id }}" @selected((string) old('contact_id') === (string) $contact->id)>{{ $contact->last_name }} {{ $contact->first_name }}
-                                        @if($contact->company) — {{ $contact->company->name }}@endif
+                                    <option value="{{ $contact->id }}" @selected((string) old('contact_id') === (string) $contact->id)>
+                                        {{ $contact->last_name }} {{ $contact->first_name }}
+                                        @if ($contact->company)
+                                            — {{ $contact->company->name }}
+                                        @endif
                                     </option>
                                 @endforeach
                             </select>
