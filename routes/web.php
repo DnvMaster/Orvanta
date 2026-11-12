@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\EmployeeController;
@@ -48,6 +49,7 @@ Route::middleware(['auth', 'active', 'password.changed'])->group(function () {
     Route::get('contacts/search', [ContactController::class, 'search'])->name('contacts.search');
     Route::post('contacts/quick-store', [ContactController::class, 'quickStore'])->name('contacts.quick-store');
     Route::resource('contacts', ContactController::class);
+    Route::resource('roles', RoleController::class)->except(['show']);
 
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
