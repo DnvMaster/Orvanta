@@ -174,6 +174,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             hideQuickForm();
+            status.hidden = true;
             showSuccessMessage('Контакт успешно создан и выбран для сделки.');
 
             lastNameInput.value = '';
