@@ -68,7 +68,7 @@ class User extends Authenticatable
 
     public function isAdmin(): bool
     {
-        return $this->role === 'admin';
+        return $this->roles()->where('slug', 'admin')->exists();
     }
 
     public function isActive(): bool

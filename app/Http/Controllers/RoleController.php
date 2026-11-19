@@ -15,17 +15,19 @@ class RoleController extends Controller
 {
     public function index(): View
     {
-        $roles = Role::withCount(['users','permissions'])->orderByDesc('is_system')->orderBy('name')->get();
+        $roles = Role::withCount(['users', 'permissions'])->orderByDesc('is_system')->orderBy('name')->get();
+
         return view('orvanta.roles.index', compact('roles'));
     }
 
     public function create(): View
     {
         $groupedPermissions = Permission::orderBy('group')->orderBy('id')->get()->groupBy('group');
+
         return view('orvanta.roles._form', [
-            'role' => new Role(),
-            'groupedPermissions' => $groupedPermissions, 
-            'assignedPermissions' => [] 
+            'role' => new Role,
+            'groupedPermissions' => $groupedPermissions,
+            'assignedPermissions' => [],
         ]);
     }
 
@@ -36,10 +38,11 @@ class RoleController extends Controller
                 'name' => $request->validated('name'),
                 'slug' => $request->validated('slug'),
                 'description' => $request->validated('description'),
-                'is_system' => false
+                'is_system' => false,
             ]);
             $this->syncPermissions($role, $request->validated('permissions', []));
         });
+
         return redirect()->route('roles.index')->with('success', 'Роль успешно создана.');
     }
 
@@ -47,6 +50,7 @@ class RoleController extends Controller
     {
         $groupedPermissions = Permission::orderBy('group')->orderBy('id')->get()->groupBy('group');
         $assignedPermissions = $role->permissions()->pluck('role_permissions.scope', 'permissions.id')->toArray();
+
         return view('orvanta.roles._form', compact('role', 'groupedPermissions', 'assignedPermissions'));
     }
 
@@ -63,6 +67,7 @@ class RoleController extends Controller
             $role->update($data);
             $this->syncPermissions($role, $request->validated('permissions', []));
         });
+
         return redirect()->route('roles.index')->with('success', 'Настройки роли обновлены.');
     }
 
@@ -75,14 +80,15 @@ class RoleController extends Controller
             return back()->with('error', 'Нельзя удалить роль, пока она назначена сотрудникам.');
         }
         $role->delete();
+
         return redirect()->route('roles.index')->with('success', 'Роль удалена.');
     }
 
     private function syncPermissions(Role $role, array $permissions): void
     {
         $syncData = [];
-        foreach($permissions as $permissionId => $scope) {
-            if(! empty($scope)) {
+        foreach ($permissions as $permissionId => $scope) {
+            if (! empty($scope)) {
                 $syncData[(int) $permissionId] = ['scope' => $scope];
             }
         }
