@@ -15,6 +15,7 @@ class EnsureUserIsAdmin
     {
         $user = $request->user();
         abort_unless($user instanceof User && $user->isAdmin(), Response::HTTP_FORBIDDEN);
+
         return $next($request);
     }
 }

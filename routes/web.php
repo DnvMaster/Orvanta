@@ -3,10 +3,12 @@
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
-use App\Http\Controllers\RoleController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DealController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -21,6 +23,7 @@ Route::middleware(['auth', 'active'])->prefix('password/initial')->name('passwor
 
 Route::middleware(['auth', 'active', 'password.changed'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/', [EmployeeController::class, 'editProfile'])->name('edit');
         Route::put('/', [EmployeeController::class, 'updateProfile'])->name('update');
@@ -45,11 +48,28 @@ Route::middleware(['auth', 'active', 'password.changed'])->group(function () {
         Route::get('/{deal}', [DealController::class, 'show'])->name('show');
     });
 
+    Route::prefix('departments')->name('departments.')->middleware('admin')->controller(DepartmentController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{department}/edit', 'edit')->name('edit');
+        Route::put('/{department}', 'update')->name('update');
+        Route::delete('/{department}', 'destroy')->name('destroy');
+    });
+
+    Route::prefix('users')->name('users.')->middleware('admin')->controller(UserController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{user}/edit', 'edit')->name('edit');
+        Route::put('/{user}', 'update')->name('update');
+        Route::delete('/{user}', 'destroy')->name('destroy');
+    });
+
     Route::resource('companies', CompanyController::class);
     Route::get('contacts/search', [ContactController::class, 'search'])->name('contacts.search');
     Route::post('contacts/quick-store', [ContactController::class, 'quickStore'])->name('contacts.quick-store');
     Route::resource('contacts', ContactController::class);
-    Route::resource('roles', RoleController::class)->except(['show']);
-
+    Route::resource('roles', RoleController::class)->except(['show'])->middleware('admin');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
