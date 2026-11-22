@@ -1,20 +1,20 @@
 @extends('orvanta.layouts.app')
 @section('title', $company->name . ' — Orvanta CRM')
-@section('breadcrumb', 'Карточка компании')
+@section('breadcrumb', __('Карточка компании'))
 @section('content')
     <section class="dashboard-content">
         <div class="page-heading">
             <div>
-                <p class="eyebrow">УПРАВЛЕНИЕ КЛИЕНТАМИ</p>
+                <p class="eyebrow">{{ __('УПРАВЛЕНИЕ КЛИЕНТАМИ') }}</p>
                 <h1>{{ $company->name }}</h1>
-                <p class="page-description">Карточка компании и связанные с ней данные.</p>
+                <p class="page-description">{{ __('Карточка компании и связанные с ней данные.') }}</p>
             </div>
             <div class="d-flex flex-wrap gap-2">
-                <a href="{{ route('companies.index') }}" class="btn btn-outline-secondary">К списку компаний</a>
-                <a href="{{ route('companies.edit', $company) }}" class="btn btn-success">Редактировать</a>
+                <a href="{{ route('companies.index') }}" class="btn btn-outline-secondary">{{ __('К списку компаний') }}</a>
+                <a href="{{ route('companies.edit', $company) }}" class="btn btn-success">{{ __('Редактировать') }}</a>
             </div>
         </div>
-        @if(session('success'))
+        @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
         <div class="row g-4">
@@ -22,39 +22,39 @@
                 <section class="panel">
                     <div class="panel-header">
                         <div>
-                            <h2>Основная информация</h2>
-                            <p>Общие сведения о компании.</p>
+                            <h2>{{ __('Основная информация') }}</h2>
+                            <p>{{ __('Общие сведения о компании.') }}</p>
                         </div>
                     </div>
                     <div class="p-4">
                         <div class="row g-4">
                             <div class="col-md-6">
-                                <div class="text-muted small mb-1">Название компании</div>
+                                <div class="text-muted small mb-1">{{ __('Название компании') }}</div>
                                 <div class="fw-semibold">{{ $company->name }}</div>
                             </div>
                             <div class="col-md-6">
-                            <div class="text-muted small mb-1">Страна регистрации</div>
+                                <div class="text-muted small mb-1">{{ __('Страна регистрации') }}</div>
                                 <div class="fw-semibold d-flex align-items-center gap-2">
                                     @if ($company->country_code)
                                         <img src="https://flagcdn.com/w40/{{ strtolower($company->country_code) }}.png" alt="{{ config('countries.' . $company->country_code . '.name', $company->country_code) }}" class="company-country-flag" width="24" height="18" loading="lazy">
                                         <span>{{ config('countries.' . $company->country_code . '.name', $company->country_code) }}</span>
                                     @else
-                                        <span class="text-muted">Не указана</span>
+                                        <span class="text-muted">{{ __('Не указана') }}</span>
                                     @endif
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="text-muted small mb-1">Юридическое название</div>
-                                <div>{{ $company->legal_name ?: 'Не указано' }}</div>
+                                <div class="text-muted small mb-1">{{ __('Юридическое название') }}</div>
+                                <div>{{ $company->legal_name ?: __('Не указано') }}</div>
                             </div>
                             <div class="col-md-6">
-                                <div class="text-muted small mb-1">Налоговый номер</div>
+                                <div class="text-muted small mb-1">{{ __('Налоговый номер') }}</div>
                                 <div>
-                                    @if($company->tax_number)
+                                    @if ($company->tax_number)
                                         {{ $company->tax_number_type }}
                                         {{ $company->tax_number }}
                                     @else
-                                        Не указан
+                                        {{ __('Не указан') }}
                                     @endif
                                 </div>
                             </div>
@@ -66,38 +66,38 @@
                 <section class="panel h-100">
                     <div class="panel-header">
                         <div>
-                            <h2>Контактная информация</h2>
-                            <p>Способы связи с компанией.</p>
+                            <h2>{{ __('Контактная информация') }}</h2>
+                            <p>{{ __('Способы связи с компанией.') }}</p>
                         </div>
                     </div>
                     <div class="p-4">
                         <div class="mb-3">
                             <div class="text-muted small mb-1">Email</div>
                             <div>
-                                @if($company->email)
+                                @if ($company->email)
                                     <a href="mailto:{{ $company->email }}">{{ $company->email }}</a>
                                 @else
-                                    Не указан
+                                    {{ __('Не указан') }}
                                 @endif
                             </div>
                         </div>
                         <div class="mb-3">
-                            <div class="text-muted small mb-1">Телефон</div>
+                            <div class="text-muted small mb-1">{{ __('Телефон') }}</div>
                             <div>
-                                @if($company->phone)
+                                @if ($company->phone)
                                     <a href="tel:{{ $company->phone }}">{{ $company->phone }}</a>
                                 @else
-                                    Не указан
+                                    {{ __('Не указан') }}
                                 @endif
                             </div>
                         </div>
                         <div>
-                            <div class="text-muted small mb-1">Веб-сайт</div>
+                            <div class="text-muted small mb-1">{{ __('Веб-сайт') }}</div>
                             <div>
-                                @if($company->website)
+                                @if ($company->website)
                                     <a href="{{ $company->website }}" target="_blank" rel="noopener noreferrer">{{ $company->website }}</a>
                                 @else
-                                    Не указан
+                                    {{ __('Не указан') }}
                                 @endif
                             </div>
                         </div>
@@ -108,15 +108,15 @@
                 <section class="panel h-100">
                     <div class="panel-header">
                         <div>
-                            <h2>Юридический адрес</h2>
-                            <p>Местонахождение компании.</p>
+                            <h2>{{ __('Юридический адрес') }}</h2>
+                            <p>{{ __('Местонахождение компании.') }}</p>
                         </div>
                     </div>
                     <div class="p-4">
-                        <div class="text-muted small mb-1">Адрес</div>
-                        <div class="mb-3">{{ $company->address ?: 'Не указан' }}</div>
-                        <div class="text-muted small mb-1">Страна</div>
-                        <div>{{ $countries[$company->address_country_code] ?? 'Не указана' }}</div>
+                        <div class="text-muted small mb-1">{{ __('Адрес') }}</div>
+                        <div class="mb-3">{{ $company->address ?: __('Не указан') }}</div>
+                        <div class="text-muted small mb-1">{{ __('Страна') }}</div>
+                        <div>{{ $countries[$company->address_country_code] ?? __('Не указана') }}</div>
                     </div>
                 </section>
             </div>
@@ -124,14 +124,13 @@
                 <section class="panel">
                     <div class="panel-header">
                         <div>
-                            <h2>Контактные лица</h2>
-                            <p>Люди, связанные с этой компанией.</p>
+                            <h2>{{ __('Контактные лица') }}</h2>
+                            <p>{{ __('Люди, связанные с этой компанией.') }}</p>
                         </div>
                         <span class="badge text-bg-light">{{ $company->contacts->count() }}</span>
                     </div>
-
                     <div class="p-4">
-                        @forelse($company->contacts as $contact)
+                        @forelse ($company->contacts as $contact)
                             <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 py-3 border-bottom">
                                 <div>
                                     <div class="fw-semibold">
@@ -142,7 +141,7 @@
                             </div>
                         @empty
                             <div class="empty-state">
-                                <p class="mb-0">У этой компании пока нет контактных лиц.</p>
+                                <p class="mb-0">{{ __('У этой компании пока нет контактных лиц.') }}</p>
                             </div>
                         @endforelse
                     </div>
@@ -152,14 +151,14 @@
                 <section class="panel">
                     <div class="panel-header">
                         <div>
-                            <h2>Сделки</h2>
-                            <p>Сделки, связанные с этой компанией.</p>
+                            <h2>{{ __('Сделки') }}</h2>
+                            <p>{{ __('Сделки, связанные с этой компанией.') }}</p>
                         </div>
                         <span class="badge text-bg-light">{{ $company->deals->count() }}</span>
                     </div>
                     <div class="p-4">
-                        @forelse($company->deals as $deal)
-                            <div class="d-flex align-items-cente justify-content-between flex-wrap gap-3 py-3 border-bottom">
+                        @forelse ($company->deals as $deal)
+                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 py-3 border-bottom">
                                 <div>
                                     <div class="fw-semibold">
                                         <a href="{{ route('deals.show', $deal) }}">{{ $deal->title }}</a>
@@ -172,7 +171,7 @@
                             </div>
                         @empty
                             <div class="empty-state">
-                                <p class="mb-0">У этой компании пока нет связанных сделок.</p>
+                                <p class="mb-0">{{ __('У этой компании пока нет связанных сделок.') }}</p>
                             </div>
                         @endforelse
                     </div>
@@ -182,15 +181,15 @@
                 <section class="panel">
                     <div class="panel-header">
                         <div>
-                            <h2>Дополнительная информация</h2>
-                            <p>Внутренние заметки о компании.</p>
+                            <h2>{{ __('Дополнительная информация') }}</h2>
+                            <p>{{ __('Внутренние заметки о компании.') }}</p>
                         </div>
                     </div>
                     <div class="p-4">
-                        @if($company->notes)
+                        @if ($company->notes)
                             <div class="text-break">{!! nl2br(e($company->notes)) !!}</div>
                         @else
-                            <div class="text-muted">Заметки отсутствуют.</div>
+                            <div class="text-muted">{{ __('Заметки отсутствуют.') }}</div>
                         @endif
                     </div>
                 </section>
