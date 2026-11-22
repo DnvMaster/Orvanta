@@ -1,15 +1,15 @@
 @extends('orvanta.layouts.app')
-@section('title', 'Добавление компании — Orvanta CRM')
-@section('breadcrumb', 'Добавление компании')
+@section('title', __('Добавление компании') . ' — Orvanta CRM')
+@section('breadcrumb', __('Добавление компании'))
 @section('content')
     <section class="dashboard-content">
         <div class="page-heading">
             <div>
-                <p class="eyebrow">УПРАВЛЕНИЕ КЛИЕНТАМИ</p>
-                <h1>Добавление компании</h1>
-                <p class="page-description">Создание карточки новой компании в Orvanta.</p>
+                <p class="eyebrow">{{ __('УПРАВЛЕНИЕ КЛИЕНТАМИ') }}</p>
+                <h1>{{ __('Добавление компании') }}</h1>
+                <p class="page-description">{{ __('Создание карточки новой компании в Orvanta.') }}</p>
             </div>
-            <a href="{{ route('companies.index') }}" class="btn btn-outline-secondary">Назад к компаниям</a>
+            <a href="{{ route('companies.index') }}" class="btn btn-outline-secondary">{{ __('Назад к компаниям') }}</a>
         </div>
         <form action="{{ route('companies.store') }}" method="POST">
             @csrf
@@ -18,26 +18,26 @@
                     <section class="panel">
                         <div class="panel-header">
                             <div>
-                                <h2>Основная информация</h2>
-                                <p>Название и страна регистрации компании.</p>
+                                <h2>{{ __('Основная информация') }}</h2>
+                                <p>{{ __('Название и страна регистрации компании.') }}</p>
                             </div>
                         </div>
                         <div class="p-4">
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label for="name" class="form-label">Название компании<span class="text-danger">*</span></label>
+                                    <label for="name" class="form-label">{{ __('Название компании') }}<span class="text-danger">*</span></label>
                                     <input type="text" id="name" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" required maxlength="255">
                                     @error('name')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="country_code" class="form-label">Страна регистрации</label>
+                                    <label for="country_code" class="form-label">{{ __('Страна регистрации') }}</label>
                                     <select id="country_code" name="country_code" class="form-select @error('country_code') is-invalid @enderror" data-countries="{{ json_encode(config('countries'), JSON_HEX_APOS | JSON_HEX_QUOT) }}" data-old-tax-type="{{ old('tax_number_type') }}">
-                                        <option value="">Выберите страну</option>
-                                            @foreach(config('countries') as $code => $country)
-                                                <option value="{{ $code }}" @selected(old('country_code') === $code)>{{ $country['name'] }}</option>
-                                            @endforeach
+                                        <option value="">{{ __('Выберите страну') }}</option>
+                                        @foreach (config('countries') as $code => $country)
+                                            <option value="{{ $code }}" @selected(old('country_code') === $code)>{{ $country['name'] }}</option>
+                                        @endforeach
                                     </select>
                                     @error('country_code')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -51,33 +51,33 @@
                     <section class="panel">
                         <div class="panel-header">
                             <div>
-                                <h2>Юридические реквизиты</h2>
-                                <p>Официальные данные регистрации компании.</p>
+                                <h2>{{ __('Юридические реквизиты') }}</h2>
+                                <p>{{ __('Официальные данные регистрации компании.') }}</p>
                             </div>
                         </div>
                         <div class="p-4">
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label for="legal_name" class="form-label">Юридическое название</label>
+                                    <label for="legal_name" class="form-label">{{ __('Юридическое название') }}</label>
                                     <input type="text" id="legal_name" name="legal_name" class="form-control @error('legal_name') is-invalid @enderror" value="{{ old('legal_name') }}" maxlength="255">
                                     @error('legal_name')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="tax_number_type" class="form-label">Тип налогового номера</label>
+                                    <label for="tax_number_type" class="form-label">{{ __('Тип налогового номера') }}</label>
                                     <select id="tax_number_type" name="tax_number_type" class="form-select @error('tax_number_type') is-invalid @enderror">
-                                        <option value="">Сначала выберите страну</option>
+                                        <option value="">{{ __('Сначала выберите страну') }}</option>
                                     </select>
                                     @error('tax_number_type')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="tax_number" class="form-label">Налоговый номер</label>
+                                    <label for="tax_number" class="form-label">{{ __('Налоговый номер') }}</label>
                                     <input type="text" id="tax_number" name="tax_number" class="form-control @error('tax_number') is-invalid @enderror" value="{{ old('tax_number') }}" maxlength="255">
                                     @error('tax_number')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -88,8 +88,8 @@
                     <section class="panel">
                         <div class="panel-header">
                             <div>
-                                <h2>Контактная информация</h2>
-                                <p>Способы связи с компанией.</p>
+                                <h2>{{ __('Контактная информация') }}</h2>
+                                <p>{{ __('Способы связи с компанией.') }}</p>
                             </div>
                         </div>
                         <div class="p-4">
@@ -98,21 +98,21 @@
                                     <label for="email" class="form-label">Email</label>
                                     <input type="email" id="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" maxlength="255">
                                     @error('email')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="phone" class="form-label">Телефон</label>
+                                    <label for="phone" class="form-label">{{ __('Телефон') }}</label>
                                     <input type="tel" id="phone" name="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}" maxlength="50">
                                     @error('phone')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="website" class="form-label">Веб-сайт</label>
+                                    <label for="website" class="form-label">{{ __('Веб-сайт') }}</label>
                                     <input type="url" id="website" name="website" class="form-control @error('website') is-invalid @enderror" value="{{ old('website') }}" placeholder="https://example.com" maxlength="255">
                                     @error('website')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -123,28 +123,28 @@
                     <section class="panel">
                         <div class="panel-header">
                             <div>
-                                <h2>Юридический адрес</h2>
-                                <p>Адрес местонахождения компании.</p>
+                                <h2>{{ __('Юридический адрес') }}</h2>
+                                <p>{{ __('Адрес местонахождения компании.') }}</p>
                             </div>
                         </div>
                         <div class="p-4">
                             <div class="row g-3">
                                 <div class="col-md-8">
-                                    <label for="address" class="form-label">Адрес</label>
+                                    <label for="address" class="form-label">{{ __('Адрес') }}</label>
                                     <textarea id="address" name="address" rows="3" class="form-control @error('address') is-invalid @enderror" maxlength="2000">{{ old('address') }}</textarea>
                                     @error('address')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="address_country_code" class="form-label">Страна</label>
+                                    <label for="address_country_code" class="form-label">{{ __('Страна') }}</label>
                                     <div class="d-flex align-items-center gap-2 mb-2" id="address-country-preview">
                                         <img src="https://flagcdn.com/w40/{{ strtolower(old('address_country_code', '')) }}.png" alt="" class="company-country-flag" width="24" height="18" loading="lazy" @if (!old('address_country_code')) hidden @endif>
                                         <span>{{ old('address_country_code') ? config('countries.' . old('address_country_code') . '.name', old('address_country_code')) : '' }}</span>
                                     </div>
                                     <select id="address_country_code" name="address_country_code" class="form-select @error('address_country_code') is-invalid @enderror">
-                                        <option value="">Выберите страну</option>
-                                        @foreach(config('countries') as $code => $country)
+                                        <option value="">{{ __('Выберите страну') }}</option>
+                                        @foreach (config('countries') as $code => $country)
                                             <option value="{{ $code }}" @selected(old('address_country_code') === $code)>{{ $country['name'] }}</option>
                                         @endforeach
                                     </select>
@@ -160,12 +160,12 @@
                     <section class="panel">
                         <div class="panel-header">
                             <div>
-                                <h2>Дополнительная информация</h2>
-                                <p>Внутренние заметки о компании.</p>
+                                <h2>{{ __('Дополнительная информация') }}</h2>
+                                <p>{{ __('Внутренние заметки о компании.') }}</p>
                             </div>
                         </div>
                         <div class="p-4">
-                            <label for="notes" class="form-label">Заметки</label>
+                            <label for="notes" class="form-label">{{ __('Заметки') }}</label>
                             <textarea id="notes" name="notes" rows="4" class="form-control @error('notes') is-invalid @enderror" maxlength="5000">{{ old('notes') }}</textarea>
                             @error('notes')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -174,8 +174,8 @@
                     </section>
                 </div>
                 <div class="col-12 d-flex justify-content-end gap-2 pb-4">
-                    <a href="{{ route('companies.index') }}" class="btn btn-outline-secondary">Отмена</a>
-                    <button type="submit" class="btn btn-success">Сохранить компанию</button>
+                    <a href="{{ route('companies.index') }}" class="btn btn-outline-secondary">{{ __('Отмена') }}</a>
+                    <button type="submit" class="btn btn-success">{{ __('Сохранить компанию') }}</button>
                 </div>
             </div>
         </form>

@@ -2,11 +2,11 @@
     <div class="app-footer-inner">
         <div class="app-footer-copyright">
             <span class="app-footer-brand">Orvanta</span>
-            <span>© {{ date('Y') }} Orvanta CRM. Все права защищены.</span>
+            <span>{{ __('© :year Orvanta CRM. Все права защищены.', ['year' => date('Y')]) }}</span>
         </div>
 
         <div class="app-footer-note">
-            Разработано <span class="app-footer-author">DnvMaster</span>
+            {{ __('Разработано') }} <span class="app-footer-author">DnvMaster</span>
         </div>
     </div>
 </footer>
