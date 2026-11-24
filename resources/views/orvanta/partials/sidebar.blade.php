@@ -48,10 +48,12 @@
             <span class="nav-icon">◇</span>
             <span class="nav-label">{{ __('Сделки') }}</span>
         </a>
-        <a href="#" class="nav-item" title="{{ __('Задачи') }}">
-            <span class="nav-icon">☑</span>
-            <span class="nav-label">{{ __('Задачи') }}</span>
-        </a>
+        @if(auth()->user()->can('tasks.view'))
+            <a href="{{ route('tasks.index') }}" class="nav-item {{ request()->routeIs('tasks.*') ? 'active' : '' }}" title="{{ __('Задачи') }}">
+                <span class="nav-icon">☑</span>
+                <span class="nav-label">{{ __('Задачи') }}</span>
+            </a>
+        @endif
         <a href="#" class="nav-item" title="{{ __('Отчёты') }}">
             <span class="nav-icon">▤</span>
             <span class="nav-label">{{ __('Отчёты') }}</span>
