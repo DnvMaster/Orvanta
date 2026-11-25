@@ -58,6 +58,7 @@
             <span class="nav-icon">▤</span>
             <span class="nav-label">{{ __('Отчёты') }}</span>
         </a>
+
     </nav>
     <div class="sidebar-bottom">
         <a href="{{ route('profile.edit') }}" class="nav-item {{ request()->routeIs('profile.*') ? 'active' : '' }}" title="{{ __('Настройки профиля') }}" aria-current="{{ request()->routeIs('profile.*') ? 'page' : 'false' }}">

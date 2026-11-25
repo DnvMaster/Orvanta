@@ -8,6 +8,7 @@ use App\Http\Controllers\DealController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,9 @@ Route::middleware(['auth', 'active'])->prefix('password/initial')->name('passwor
 
 Route::middleware(['auth', 'active', 'password.changed'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::prefix('tasks')->name('tasks.')->controller(TaskController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+    });
 
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/', [EmployeeController::class, 'editProfile'])->name('edit');
