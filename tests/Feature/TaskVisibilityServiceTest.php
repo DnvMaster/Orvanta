@@ -139,6 +139,55 @@ class TaskVisibilityServiceTest extends TestCase
         $this->assertCount(0, $this->visibility->queryFor($employee)->get());
     }
 
+    public function test_department_scope_without_department_does_not_grant_global_access(): void
+    {
+        $manager = $this->createUserWithPermission('department');
+        $manager->update(['department_id' => null]);
+        $anotherEmployee = User::factory()->create(['status' => 'active']);
+        $task = $this->createTask($anotherEmployee, $anotherEmployee);
+        $this->assertFalse($this->visibility->canView($manager, $task));
+        $this->assertCount(0, $this->visibility->queryFor($manager)->get());
+    }
+
+    public function test_department_scope_does_not_include_tasks_based_only_on_creator_department(): void
+    {
+        $manager = $this->createUserWithPermission('department');
+        $department = Department::query()->forceCreate([
+            'name' => 'Manager Department',
+        ]);
+        $otherDepartment = Department::query()->forceCreate([
+            'name' => 'Other Department',
+        ]);
+        $manager->update(['department_id' => $department->id]);
+        $departmentCreator = User::factory()->create([
+            'department_id' => $department->id,
+            'status' => 'active',
+        ]);
+        $otherAssignee = User::factory()->create([
+            'department_id' => $otherDepartment->id,
+            'status' => 'active',
+        ]);
+        $task = $this->createTask($departmentCreator, $otherAssignee);
+        $this->assertFalse($this->visibility->canView($manager, $task));
+    }
+
+    public function test_participant_does_not_gain_update_access_through_view_permission(): void
+    {
+        $employee = $this->createUserWithPermission('own');
+        $anotherEmployee = User::factory()->create(['status' => 'active']);
+        $task = $this->createTask($anotherEmployee, $anotherEmployee);
+        TaskParticipant::query()->create([
+            'task_id' => $task->id,
+            'user_id' => $employee->id,
+            'added_by' => $anotherEmployee->id,
+            'added_at' => now(),
+        ]);
+        $this->assertTrue($this->visibility->canView($employee, $task));
+        $this->assertFalse(
+            $this->visibility->canAccess($employee, $task, 'tasks.update')
+        );
+    }
+
     private function createUserWithPermission(string $scope): User
     {
         $user = User::factory()->create(['status' => 'active']);

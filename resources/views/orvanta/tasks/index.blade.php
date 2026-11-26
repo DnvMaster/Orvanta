@@ -6,6 +6,9 @@
                 <h1 class="h3 mb-1">{{ __('Задачи') }}</h1>
                 <p class="text-muted mb-0">{{ __('Управление рабочими задачами') }}</p>
             </div>
+            @can('create', \App\Models\Task::class)
+                <a href="{{ route('tasks.create') }}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>{{ __('Создать задачу') }}</a>
+            @endcan
         </div>
         <div class="mb-4">
             <ul class="nav nav-pills flex-wrap gap-2">
@@ -34,6 +37,7 @@
                                     <th>{{ __('Приоритет') }}</th>
                                     <th>{{ __('Срок выполнения') }}</th>
                                     <th>{{ __('Статус') }}</th>
+                                    <th>{{ __('Действия') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -81,6 +85,11 @@
                                             @default
                                                 —
                                         @endswitch
+                                    </td>
+                                    <td>
+                                        @can('update', $task)
+                                            <a href="{{ route('tasks.edit', $task) }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i>{{ __('Изменить') }}</a>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach

@@ -13,8 +13,9 @@ class TaskVisibilityService
     public function queryFor(User $user, string $permission = 'tasks.view'): Builder
     {
         $query = Task::query();
+
         $scope = $user->getPermissionScope($permission);
-        if ($scope === null || ! $user->isActive()) {
+        if (! $user->isActive() || ! in_array($scope, ['own', 'department', 'all'], true)) {
             return $query->whereRaw('1 = 0');
         }
 
